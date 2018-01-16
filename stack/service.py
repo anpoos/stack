@@ -10,7 +10,8 @@ def authenticate(username,password):
 		return row[0]
 	else:
 		return False
-def dataStore(title,description,created_user):
+
+def createIssue(title,description,created_user):
 	cursor=connection.cursor()
 	date = datetime.datetime.now()
 	cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
@@ -28,14 +29,17 @@ def getIssueById(id):
 	row = cursor.fetchone()
 	return row
 
-def solutionStore(solution, created_user, id):
+def createSolution(solution, created_user, issue_id):
 	print id, created_user
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
 	print created_user
-	cursor.execute(" insert into solution (solution, created_by, created_date, issue_id) values(%s,%s,%s,%s)",[solution,created_user,date,id])
+	cursor.execute(" insert into solution (solution, created_by, created_date, issue_id) values(%s,%s,%s,%s)",[solution,created_user,date,issue_id])
 	connection.commit()
-	cursor.execute(" select * from solution where issue_id = %s", [id])
+	
+def getSolutionsForIssue(issue_id):
+	cursor = connection.cursor()
+	cursor.execute(" select * from solution where issue_id = %s", [issue_id])
 	row = cursor.fetchall()
 	return row
 

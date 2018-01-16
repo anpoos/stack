@@ -59,13 +59,13 @@ input[type=text], select {
 	
 <div class="title">{{issue.1}}</div>
 <div id="detail">{{issue.2}}</div>
-<div id="info"><div id="name">Test</div><div id="time" >10-10-2017</div></div>
+<div id="info"><div id="name">{{issue.3}}</div><div id="time" >{{issue.4}}</div></div>
 </div>
 <form name="f1" method="post" action="/view_issue_solution/{{issue.0}}/">
 
 <table>
 	
-	{% for row in store %}
+	{% for row in solutions %}
 	
 		<tr><td>{{row.2}}</td><td>{{row.3}}<td>{{row.4}}</td></td></tr>
 
@@ -73,7 +73,7 @@ input[type=text], select {
 </table>	
 
 Solution: 
-<br><textarea id="solution" rows="10" cols="100" name="solution" placeholder="Write Your Solution here... " >  </textarea> <br>
+<br><textarea id="solution" rows="10" cols="100" name="solution" placeholder="Write Your Solution here... " ></textarea> <br>
 
 <center>
 
