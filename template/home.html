@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+	<style type="text/css">
+		 form {
+			background-color:#c8c750b3	;
+		}
+	</style>
+
+</head>
+<body bgcolor="#50848080">
+	<form name="head">
+		<table align="right">
+			<tr><br><br>
+				<td><LABEL> STACK</LABEL></td>
+				<td><a href="/create_issue"><input type="button" name="" value="CreateIssue"></a></td>
+				<td><input type="button" name="" value="Menu2"></td>
+				<td><input type="button" name="" value="Menu3"></td>
+
+			</tr>
+		</table><br><br>
+		<table><center>
+			
+			Search: <input type="Search" size="70" name="">
+
+		</center>
+		</table><br>
+
+	</form><br>
+	<center>
+	
+	<table>
+		<tr><br><br>
+		<tr><td><u>ID</u></td><td>Title</td><td>Description</td></tr>
+		{% for row in record %}
+			<tr><td>{{row.0}}</td><td>{{row.1}}</td><td>{{row.2}}</td><td><a href="/view_issue/{{row.0}}">View</a></td></tr>
+		{% endfor %}
+		</tr>
+		
+	</table>
+
+	</center>
+
+</body>
+</html>

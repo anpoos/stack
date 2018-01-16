@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Issue Submission
+	</title>
+<style type="text/css">
+		form {
+			background-color:#c8c750b3	;
+		}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+</style>
+
+
+</head>
+<body bgcolor="#50848080">
+	<form method="post">
+		<table align="right">
+			<tr><br><br>
+				<td><LABEL> STACK</LABEL></td>
+				<td><input type="button" name="" value="Menu1"></td>
+				<td><input type="button" name="" value="Menu2"></td>
+				<td><input type="button" name="" value="Menu3"></td>
+
+			</tr>
+		</table>
+
+	<center>
+		
+	<table >
+		<tr>
+			<td><br><label> CREATE ISSUE </label> </td>
+		</tr>
+		<tr>
+			<td>Title : <input type="text" size="80" id="tt" name="title"></td><br>
+			
+		</tr>
+		<tr>
+			<td>Description: <input type="text"  id="des" name="description" style="width: 100%; height: 100px"></td>
+			
+		</tr>
+	</table>
+	
+	
+
+	</center>
+	<footer>
+		<table align="right">
+		<tr>
+			<td><input type="Reset" name="" value="Reset"></td>
+			<td><input type="submit" onclick="validation()" name="" value="Submit"></td>
+		</tr>
+		</table>
+	</footer>
+	</form>
+
+	
+           
+
+</body>
+<script>
+	function validation() {
+
+		var a = document.getElementById('tt').value;
+
+		var b = document.getElementById('des').value;
+
+
+		if (a == "")
+		{
+
+			alert("Enter the Title")
+			return false 
+		}
+
+		else if(b == "")
+		{
+
+			alert("Enther the Description")
+		}
+		else
+			alert("Your Issues Submitted")
+
+
+	}
+	
+</script>
+</html>

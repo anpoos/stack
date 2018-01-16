@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+
+	form {
+		background:#c8c750b3 ; border:  3px solid #f1f1f1; height: 590px;
+	}
+</style>
+	<title> Issue Stack Login </title>
+
+<script>
+	function myFun(){
+		
+		var a,b;
+		a = document.getElementById('un').value;
+		b = document.getElementById('pw').value;
+
+		if(a == ""){
+			alert("Enter Username");
+			return false;
+
+		}
+		else if(b == ""){
+			alert("Enter Password");
+		}
+		
+	}
+</script>
+	
+</head>
+<body>
+	<fieldset>
+<form name="login" method="POST"> <center>
+	<!--<h1> Schools India Issue Stack Welcome You</h1>-->
+	
+<table> 
+	
+	<tr>
+		<td> Username: <input type="text" id="un" placeholder="Enter Username" size="30"  name="username"></td>
+	</tr><br>
+	<tr>
+		
+		<td> Password : <input type="Password" id="pw" placeholder="Enter Password" size="30" name="password"></td>
+	</tr><br><br>
+	<tr>
+		<td><br><input type="reset" name=""  value="Reset"></td>
+		<td><br><input type="submit" name="" onclick="myFun()" value="Login"></td>
+
+	</tr>
+</table>
+</center>
+</form>
+</fieldset>
+
+</body>
+</html>

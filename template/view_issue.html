@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Issue Submission
+	</title>
+<style type="text/css">
+		form {
+			background-color:#c8c750b3	;
+		}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.container{
+	width: 100%;
+	background: green;
+}
+.title{
+	font-size:40px;
+
+}
+#detail
+{
+	font-size: 30px;
+	color: white;
+	text-indent: 50px;
+	border-top: dotted; 
+}
+#time
+{
+	float: right;
+}
+</style>
+
+
+</head>
+<body bgcolor="#50848080">
+
+		<table align="right">
+			<tr><br><br>
+				<td><LABEL> STACK</LABEL></td>
+				<td><input type="button" name="" value="Menu1"></td>
+				<td><input type="button" name="" value="Menu2"></td>
+				<td><input type="button" name="" value="Menu3"></td>
+
+			</tr>
+		</table>
+
+	
+		
+<div class="container">
+	
+<div class="title">{{issue.1}}</div>
+<div id="detail">{{issue.2}}</div>
+<div id="info"><div id="name">Test</div><div id="time" >10-10-2017</div></div>
+</div>
+<form name="f1" method="post" action="/view_issue_solution/{{issue.0}}/">
+
+<table>
+	
+	{% for row in store %}
+	
+		<tr><td>{{row.2}}</td><td>{{row.3}}<td>{{row.4}}</td></td></tr>
+
+	{% endfor %}
+</table>	
+
+Solution: 
+<br><textarea id="solution" rows="10" cols="100" name="solution" placeholder="Write Your Solution here... " >  </textarea> <br>
+
+<center>
+
+<input type="submit" name="Submit" onclick="solutioFn()" value="Submit">
+</center> 
+</form>
+
+<hr>
+
+	<script type="text/javascript">
+		function solutioFn() {
+
+			var solution;
+			solution = document.getElementById('solution').value
+			if(solution == ""){
+				alert("Write your solution.....");
+				return false;
+
+			}
+		}
+	</script>
+</body>
+
+
+
+</html>
