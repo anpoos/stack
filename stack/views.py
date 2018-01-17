@@ -41,4 +41,4 @@ def setSolution(request,id):
 		created_user_id = request.session['logged_user'][0]
 		store = service.createSolution(solution,created_user_id,id)
 	return HttpResponseRedirect('/view_issue/%s'%(id))	
-
+#lllllllllllllllllll
