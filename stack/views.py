@@ -42,5 +42,5 @@ def setSolution(request,id):
 		store = service.createSolution(solution,created_user_id,id)
 	return HttpResponseRedirect('/view_issue/%s'%(id))	
 #testing
-
+#test2
 	
