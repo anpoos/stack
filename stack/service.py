@@ -23,11 +23,10 @@ def getIssues():
 	val = cursor.fetchall()
 	return val
 
-def getIssueById(id,created_user_id):
-	print id
+def getIssueById(id): #,created_user_id
 	cursor = connection.cursor()
-	cursor.execute(" select first_name,last_name,title,description,created_date from employee a,issue b where b.id = %s and created_by = %s ", [id,created_user_id])
-	#cursor.execute(" select * from issue where id = %s ", [id])
+	#cursor.execute(" select first_name,last_name,title,description,created_date from employee a,issue b where b.id = %s and created_by = %s ", [id,created_user_id])
+	cursor.execute(" select * from issue where id = %s ", [id])
 	row = cursor.fetchone()
 	return row
 
@@ -35,7 +34,6 @@ def createSolution(solution, created_user, issue_id):
 
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
-	user_name = cursor.fetchall()
 	cursor.execute(" insert into solution (solution, created_by, created_date, issue_id) values(%s,%s,%s,%s)",[solution,created_user,date,issue_id])
 	connection.commit()
 	
@@ -46,6 +44,15 @@ def getSolutionsForIssue(issue_id):
 	#cursor.execute(" select * from solution where issue_id = %s", [issue_id])
 	row = cursor.fetchall()
 	return row
+
+def getSearchResult(searchKey):
+	cursor = connection.cursor()
+	cursor.execute(" select solution,created_date from solution where solution like %s",[searchKey])
+	searchResult = cursor.fetchall()
+	print searchResult
+	return searchResult
+
+
 
 
 	
