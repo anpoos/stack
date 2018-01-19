@@ -41,6 +41,7 @@ def getSolutionsForIssue(issue_id):
 	cursor = connection.cursor()
 
 	cursor.execute(" select first_name,last_name,solution,created_date from solution,employee where issue_id = %s", [issue_id])
+	#cursor.execute(" select a.first_name,a.last_name,b.solution,b.created_date from solution a,employee b using issue_id = %s", [issue_id])
 	#cursor.execute(" select * from solution where issue_id = %s", [issue_id])
 	row = cursor.fetchall()
 	return row

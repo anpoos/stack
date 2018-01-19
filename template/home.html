@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+				{% include "header.html" %}
 	<title>Home Page</title>
 	<style type="text/css">
 		 form {
@@ -10,6 +11,7 @@
 
 </head>
 <body bgcolor="#50848080">
+	<!--
 	<form name="head" method="post" action="/home_search_result/">
 		<table align="right">
 			<tr><br><br>
@@ -22,7 +24,6 @@
 		</table><br><br>
 		<table><center>
 			
-			<!--Search: <input type="Search" size="70" name="">-->
 			Search: <input type="text" size="70" name="search">
 
 
@@ -38,14 +39,18 @@
 		{% for row in result %}
 			<tr><td>{{row.0}}</td><td>{{row.1}}</td></tr>
 		{% endfor %}
-		
+		-->
+		<center>
+		<table>
+
 		<tr><td><u>ID</u></td><td>Title</td><td>Description</td></tr>
 		{% for row in record %}
 			<tr><td>{{row.0}}</td><td>{{row.1}}</td><td>{{row.2}}</td><td><a href="/view_issue/{{row.0}}">View</a></td></tr>
 		{% endfor %}
 		</tr>
 		
-	</table>
+		</table>
+		</center>
 
 	</center>
 

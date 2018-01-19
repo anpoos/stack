@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Home Page</title>
+
 	<style type="text/css">
 		 form {
 			background-color:#c8c750b3	;
@@ -10,7 +11,7 @@
 
 </head>
 <body bgcolor="#50848080">
-	<form name="head">
+	<form name="head" method="post" action="/home_search_result/">
 		<table align="right">
 			<tr><br><br>
 				<td><LABEL> STACK</LABEL></td>
@@ -22,12 +23,24 @@
 		</table><br><br>
 		<table><center>
 			
-			Search: <input type="Search" size="70" name="">
+			<!--Search: <input type="Search" size="70" name="">-->
+			Search: <input type="text" size="70" name="search">
+
 
 		</center>
 		</table><br>
 
 	</form><br>
+	<center>
+	
+	<table>
+		<tr><br><br>
+
+		{% for row in result %}
+			<tr><td>{{row.0}}</td><td>{{row.1}}</td></tr>
+		{% endfor %}
+	</table>
+	</center><br>
 	
 </body>
 </html>
