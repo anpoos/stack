@@ -29,8 +29,8 @@ def create(request):
 	return render_to_response('issue.html')
 
 def viewIssue(request,id):
-	
-	issue = service.getIssueById(id)
+	#created_user_id = request.session['logged_user'][0] # for accessing  user name by id
+	issue = service.getIssueById(id)#,created_user_id
 	solutions = service.getSolutionsForIssue(id)
 	return render_to_response('view_issue.html',{'issue':issue,'solutions':solutions})
 
@@ -41,6 +41,11 @@ def setSolution(request,id):
 		created_user_id = request.session['logged_user'][0]
 		store = service.createSolution(solution,created_user_id,id)
 	return HttpResponseRedirect('/view_issue/%s'%(id))	
-#testing
-#test2
-	
+
+def searchResult(request):
+	print "................"
+	if request.method == 'POST':
+		searcKey = request.POST['search']
+		query = service.getSearchResult(searcKey)
+		return render_to_response('home.html',{'result':query})
+	return render_to_response('home.html')
