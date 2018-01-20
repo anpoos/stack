@@ -19,9 +19,15 @@ def createIssue(title,description,created_user):
 
 def getIssues():
 	cursor = connection.cursor()
-	cursor.execute(" select * from issue ")
+	# cursor.execute(" select * from issue ")
+	cursor.execute("select id,title,description from issue")
 	val = cursor.fetchall()
-	return val
+	rowList = []
+	for row in val:
+		rowdict = {'id':row[0],'title':row[1],'description':row[2]}
+		rowList.append(rowdict)
+
+	return rowList
 
 def getIssueById(id): #,created_user_id
 	cursor = connection.cursor()
@@ -48,10 +54,22 @@ def getSolutionsForIssue(issue_id):
 
 def getSearchResult(searchKey):
 	cursor = connection.cursor()
-	cursor.execute(" select solution,created_date from solution where solution like %s",[searchKey])
+	searchKey = '%'+searchKey+'%'
+	cursor.execute(" select id,title, description from issue where title like %s or description like %s",[searchKey,searchKey])
 	searchResult = cursor.fetchall()
-	print searchResult
-	return searchResult
+	
+	rowList = []
+	for row in searchResult:
+		rowdict = {'id':row[0],'title':row[1],'description':row[2]}
+
+		rowList.append(rowdict)
+	print rowList	
+	return rowList
+	# #print searchResult{'id':=id,'title':=title,'description':description}
+	# print searchResult,'resul....'
+	# return searchResult
+
+	
 
 
 

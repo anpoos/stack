@@ -36,16 +36,14 @@
 	<table>
 		<tr><br><br>
 
-		{% for row in result %}
-			<tr><td>{{row.0}}</td><td>{{row.1}}</td></tr>
-		{% endfor %}
+		
 		-->
 		<center>
 		<table>
 
 		<tr><td><u>ID</u></td><td>Title</td><td>Description</td></tr>
 		{% for row in record %}
-			<tr><td>{{row.0}}</td><td>{{row.1}}</td><td>{{row.2}}</td><td><a href="/view_issue/{{row.0}}">View</a></td></tr>
+			<tr><td>{{id}}</td><td>{{title}}</td><td>{{description}}</td><td><a href="/view_issue/{{id}}">View</a></td></tr>
 		{% endfor %}
 		</tr>
 		
