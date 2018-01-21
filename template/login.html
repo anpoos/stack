@@ -1,28 +1,39 @@
-<!DOCTYPE html>
+<!DOCTYPE html>	
 <html>
 <head>
-<style type="text/css">
+<link rel="stylesheet" type="text/css" href="/static/css/common.css">
 
+<style type="text/css">
+  body {
+  	background:#9c8581b3 ;
+  	color: white;
+  	padding-top: 120px;
+  }
 	form {
-		background:#c8c750b3 ; border:  3px solid #f1f1f1; height: 590px;
+		background:#0f0d0db3 ; 
+		width: 600px;
+		
 	}
 </style>
 	<title> Issue Stack Login </title>
 
 <script>
-	function myFun(){
+	function validation(){
 		
-		var a,b;
-		a = document.getElementById('un').value;
-		b = document.getElementById('pw').value;
+		var username,password;
+		username = document.getElementById('username').value;
+		password = document.getElementById('password').value;
 
-		if(a == ""){
+		if(username.trim() == ""){
 			alert("Enter Username");
+			document.getElementById('username').focus()
 			return false;
 
 		}
-		else if(b == ""){
+		else if(password.trim() == ""){
 			alert("Enter Password");
+			document.getElementById('password').focus()
+			return false;
 		}
 		
 	}
@@ -30,28 +41,33 @@
 	
 </head>
 <body>
-	<fieldset>
-<form name="login" method="POST"> <center>
-	<!--<h1> Schools India Issue Stack Welcome You</h1>-->
+<center>
 	
+<form name="login" method="POST"> <br>
+	<img src="/static/image/logo.png">
+
 <table> 
-	
 	<tr>
-		<td> Username: <input type="text" id="un" placeholder="Enter Username" size="30"  name="username"></td>
-	</tr><br>
+		<td>Username :</td><td><input type="text" id="username" placeholder="Enter Username" size="30"  name="username"></td>
+	</tr>
 	<tr>
 		
-		<td> Password : <input type="Password" id="pw" placeholder="Enter Password" size="30" name="password"></td>
-	</tr><br><br>
+		<td>Password :</td><td>  <input type="Password" id="password" placeholder="Enter Password" size="30" name="password"></td>
+	</tr>
 	<tr>
-		<td><br><input type="reset" name=""  value="Reset"></td>
-		<td><br><input type="submit" name="" onclick="myFun()" value="Login"></td>
+		<td></td><td>
+		<center>
+			<input type="reset" name=""  value="Reset" class="button red"> &nbsp;&nbsp;&nbsp;
+			<input type="submit" name="" onclick="return validation()" value="Login" class="button">
+		</center>
+		</td>
+		
 
 	</tr>
 </table>
-</center>
+
 </form>
-</fieldset>
+</center>	
 
 </body>
 </html>
