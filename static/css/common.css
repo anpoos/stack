@@ -1,0 +1,70 @@
+input[type=text],[type=password] {
+    width: 100%;
+    padding: 8px 5px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.button {
+    background-color: #17CD1E;; /* Green */
+    border: none;
+    color: white;
+    width: 70px;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight:bold;
+
+    margin: 8px 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.red{
+	 background-color: #c32b2b;
+}
+
+
+.menu{
+    overflow: hidden;
+    background-color: #333333;
+}
+.menu ul{
+    list-style-type: none;
+    margin: 0;
+    padding:2;
+
+
+}
+.menu-left li {
+	float: left;
+    color: white;
+    font-weight: bold;
+}
+
+.menu-right li{
+	float: right;
+    font-weight: bold;
+
+}
+
+.menu li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.menu li a:hover {
+    background-color: #111111;
+}
+
+.menu ul input{
+	width: 400px !important;
+	padding: 9px !important;
+    margin: 7px 3px !important;
+    box-sizing: border-box !important;
+    border-radius: 5px !important;
+
+}

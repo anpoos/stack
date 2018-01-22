@@ -26,7 +26,6 @@ def getIssues():
 	for row in val:
 		rowdict = {'id':row[0],'title':row[1],'description':row[2]}
 		rowList.append(rowdict)
-
 	return rowList
 
 def getIssueById(id): #,created_user_id

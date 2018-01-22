@@ -43,7 +43,7 @@
 
 		<tr><td><u>ID</u></td><td>Title</td><td>Description</td></tr>
 		{% for row in record %}
-			<tr><td>{{id}}</td><td>{{title}}</td><td>{{description}}</td><td><a href="/view_issue/{{id}}">View</a></td></tr>
+			<tr><td>{{row.id}}</td><td>{{row.title}}</td><td>{{row.description}}</td><td><a href="/view_issue/{{row.id}}">View</a></td></tr>
 		{% endfor %}
 		</tr>
 		

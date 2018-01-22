@@ -10,12 +10,14 @@ def login(request):
           user = service.authenticate(username = username,password = password)
           if user:
           	request.session['logged_user'] = user
-          	return HttpResponseRedirect('/home')
+          	print request.session['logged_user']
+          	return HttpResponseRedirect('/')
                       
 	return render_to_response('login.html',)
 
 def logout(request):
-	del request.session['logged_user']
+	if 'logged_user' in request.session:
+		del request.session['logged_user']
 	return HttpResponseRedirect('/login')
 
 
@@ -55,12 +57,7 @@ def setSolution(request,id):
 		created_user_id = request.session['logged_user'][0]
 		store = service.createSolution(solution,created_user_id,id)
 	return HttpResponseRedirect('/view_issue/%s'%(id))	
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> b1
-=======
 def searchResult(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
@@ -69,4 +66,4 @@ def searchResult(request):
 		query = service.getSearchResult(searcKey)
 		return render_to_response('home.html',{'record':query})
 	return render_to_response('home.html')
->>>>>>> b1
+
