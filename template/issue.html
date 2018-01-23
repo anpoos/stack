@@ -2,12 +2,16 @@
 <html>
 <head>
 				{% include "header.html" %}
+				<link rel="stylesheet" type="text/css" href="/static/css/common.css">
+
+
 	<title>
 		Issue Submission
 	</title>
 <style type="text/css">
 		form {
 			background-color:#c8c750b3	;
+
 		}
 
 input[type=text], select {
@@ -21,21 +25,14 @@ input[type=text], select {
 }
 
 
+
 </style>
 
 
 </head>
 <body bgcolor="#50848080">
 	<form method="post">
-		<table align="right">
-			<tr><br><br>
-				<td><LABEL> STACK</LABEL></td>
-				<td><input type="button" name="" value="Menu1"></td>
-				<td><input type="button" name="" value="Menu2"></td>
-				<td><input type="button" name="" value="Menu3"></td>
-
-			</tr>
-		</table>
+		
 
 	<center>
 		
@@ -51,19 +48,20 @@ input[type=text], select {
 			<td>Description: <input type="text"  id="des" name="description" style="width: 100%; height: 100px"></td>
 			
 		</tr>
+		<tr>
+			<td><center>
+				
+				<input type="Reset" name="" value="Reset" class="button red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="submit" onclick="return validation()" name="" value="Submit" class="button">
+				</center>
+			</td>
+		</tr>
 	</table>
 	
 	
 
 	</center>
-	<footer>
-		<table align="right">
-		<tr>
-			<td><input type="Reset" name="" value="Reset"></td>
-			<td><input type="submit" onclick="validation()" name="" value="Submit"></td>
-		</tr>
-		</table>
-	</footer>
+	
 	</form>
 
 	
@@ -89,6 +87,7 @@ input[type=text], select {
 		{
 
 			alert("Enther the Description")
+			return false
 		}
 		else
 			alert("Your Issues Submitted")
