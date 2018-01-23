@@ -53,17 +53,20 @@ def getSolutionsForIssue(issue_id):
 
 def getSearchResult(searchKey):
 	cursor = connection.cursor()
-	sql = "select * from issue"
-	cursor.execute(sql)
+	sql = "select id,title, description from issue where "
 	string = searchKey.split()
-	print string
-	for splitWord in string:
+	sqlList = []
+	for index,splitWord in enumerate(string):
 		searchKey = '%'+splitWord+'%'
+		if index !=0:
+			sql += ' or '
+		sql += " title like %s or description like %s "
+		sqlList.append(searchKey)
+		sqlList.append(searchKey)
+
+	cursor.execute(sql,sqlList)
 		
-		print searchKey
-		cursor.execute(" select id,title, description from issue where title like %s or description like %s",[searchKey,searchKey])
-		
-		searchResult = cursor.fetchall()
+	searchResult = cursor.fetchall()
 	
 	rowList = []
 	for row in searchResult:
@@ -71,7 +74,7 @@ def getSearchResult(searchKey):
 
 		rowList.append(rowdict)
 		print rowList	
-		return rowList
+	return rowList
 	# #print searchResult{'id':=id,'title':=title,'description':description}
 	# print searchResult,'resul....'
 	# return searchResult 
