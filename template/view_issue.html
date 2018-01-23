@@ -33,6 +33,9 @@ input[type=text], select {
 	padding: 10px;
 
 }
+.container1{
+	width: 100%;
+}
 
 .row {
 		border: 1px solid #005380;;
@@ -66,11 +69,11 @@ input[type=text], select {
 #solution
 {
 	font-size: 20px;
-	color: ;
 	text-indent: 20px;
 	text-align: justify-all;
 	border-spacing:10px;
-}
+	padding: 10px;
+} 
 
 </style>
 
@@ -110,12 +113,14 @@ input[type=text], select {
 	
 
 
-Solution: 
-<br><textarea id="solution" rows="10" cols="100" name="solution" placeholder="Write Your Solution here... " ></textarea> <br>
+<div style="font-weight: bold; font-size: 23px;color: #e71b1bb3" >Solution:</div> <center>
+	
+<br><textarea id="solution" rows="10" cols="100" name="solution" placeholder="Write Your Solution here... "></textarea> <br>
+</center>
 
 <center>
 
-<input type="submit" name="Submit" onclick="solutioFn()" value="Submit">
+<input type="submit" name="Submit" onclick="solutioFn()" value="Submit" class="button">
 </center> 
 </form>
 
