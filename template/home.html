@@ -42,10 +42,10 @@
 		<table>
 
 			<tr id="title">
-				<td><u>ID</u></td><td>Title</td><td>Description</td><td>View</td>
+				<td>Count</td><td>Title</td><td>Description</td><td>Created by</td><td>Date and Time</td><td>View</td>
 			</tr>
 			{% for row in record %}
-				<tr id = "content"><td>{{row.id}}</td><td>{{row.title}}</td><td>{{row.description}}</td><td><a href="/view_issue/{{row.id}}">View</a></td></tr>
+				<tr id = "content"><td>{{row.id}}</td><td>{{row.title}}</td><td>{{row.description}}</td><td>{{row.first_name}} {{row.last_name}}</td><td>{{row.created_date}}</td><td><a href="/view_issue/{{row.id}}">View</a></td></tr>
 			{% endfor %}
 			</tr>
 		

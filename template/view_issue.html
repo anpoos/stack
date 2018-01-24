@@ -117,22 +117,23 @@ input[type=text], select {
 
 <center>
 
-<input type="submit" name="Submit" onclick="solutioFn()" value="Submit" class="button">
+<input type="submit" name="Submit" onclick="return solutioFn()" value="Submit" class="button">
 </center> 
 </form>
 
-<hr>
+
 
 	<script type="text/javascript">
 		function solutioFn() {
 
 			var solution;
 			solution = document.getElementById('solution').value
+			alert(solution)
 			if(solution == ""){
 				alert("Write your solution.....");
 				return false;
-
 			}
+
 		}
 	</script>
 
