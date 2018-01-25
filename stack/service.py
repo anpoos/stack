@@ -17,9 +17,9 @@ def createIssue(title,description,created_user):
 	cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
 	connection.commit()
 
-def getIssues():
+def getIssues(fromLimit = None,toLimit = None):
 	cursor = connection.cursor()
-	# cursor.execute(" select * from issue ")
+	# cursor.execute(" select * from issue ") 
 	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by")
 	val = cursor.fetchall()
 	rowList = []
@@ -55,16 +55,17 @@ def getSolutionsForIssue(issue_id):
 def getSearchResult(searchKey):
 	cursor = connection.cursor()
 	sql = "select id,title, description from issue where "
-	string = searchKey.split()
+	lowerSearchKey = searchKey.lower()
+	string = lowerSearchKey.split()
 	stringFinal = getKeyword(string)
 	sqlList = []
 	for index,splitWord in enumerate(stringFinal):
-		searchKey = '%'+splitWord+'%'
+		likeKey = '%'+splitWord+'%'
 		if index !=0:
 			sql += ' or '
 		sql += " title like %s or description like %s "
-		sqlList.append(searchKey)
-		sqlList.append(searchKey)
+		sqlList.append(likeKey)
+		sqlList.append(likeKey)
 
 	cursor.execute(sql,sqlList)
 		
@@ -78,11 +79,11 @@ def getSearchResult(searchKey):
 		print rowList	
 	return rowList
 
-def getKeyword(string):
-	print string
-	removeList = ['a','is','was','and','when','what','as','where','to','at']
+def getKeyword(finalString):
+	print finalString
+	removeList = ['a','is','was','we','and','when','what','as','where','to','at','for','at','in','i','be','that','this','have','has','had']
 	finalList = []
-	for row in string:		
+	for row in finalString:		
 		if row not in removeList:				
 			finalList.append(row)
 	return finalList	

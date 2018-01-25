@@ -1,6 +1,7 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from stack import service
+import math
 #from django.views.generic import TemplateView
 def login(request):
 	if request.method == 'POST':
@@ -24,9 +25,15 @@ def logout(request):
 def home(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
-	record = service.getIssues()
-	print record
-	return render_to_response('home.html',{'record':record})
+	record = service.getIssues() 
+	limit = 5
+	pageNo = request.GET['page']  
+	print pageNo
+	recordCount = len(record)
+	pageCount = int(math.ceil(recordCount/float(limit)))
+	pageCountList=range(1,pageCount+1) #convert integer/float to list; eg:range(2)=>[0,1]
+
+	return render_to_response('home.html',{'record':record,'recordCount':recordCount,'pageCountList':pageCountList})
 
 def create(request):
 	if not 'logged_user' in request.session:

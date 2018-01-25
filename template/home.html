@@ -9,27 +9,39 @@
 		}
 
 		table{
-			width: 70%;
-			padding: 1px;
-			border: 1px solid #1C6EA4;
+			width: 100%;
+		
   			background-color: #EEEEEE;
   			text-align: left;
-  			border-collapse: collapse;
+  			 border-collapse: collapse;
 
 		}
 		td{
-			border: groove;
+			border-bottom: 1px solid #1C6EA4;
+			padding: 15px;
+
 		}
+
+		tr:hover { 
+			background-color: #717F89;
+			color: white;
+
+		}
+
+		tr:nth-child(even){
+
+		}
+
+		
 		
 		#title{
 			background-color: #4a9c8b;
-			text-align: center;
+			text-align: left;
 			font-weight: bold;
 			font-style: oblique;
 			color: white;
 		}
 		#content{
-			background-color:#d4d3d000;
 			padding: 10px;
 		}
 
@@ -42,14 +54,30 @@
 		<table>
 
 			<tr id="title">
-				<td>Count</td><td>Title</td><td>Description</td><td>Created by</td><td>Date and Time</td><td>View</td>
+				<td width="5%">ID</td>
+				<td width="25%">Title</td>
+				<td width="40%">Description</td>
+				<td width="10%">Created by</td>
+				<td width="15%">Date and Time</td>
+				<td width="5%">View</td>
 			</tr>
+
 			{% for row in record %}
-				<tr id = "content"><td>{{row.id}}</td><td>{{row.title}}</td><td>{{row.description}}</td><td>{{row.first_name}} {{row.last_name}}</td><td>{{row.created_date}}</td><td><a href="/view_issue/{{row.id}}">View</a></td></tr>
+				<tr id = "content">
+					<td><div >{{row.id}}</div></td>
+					<td><div >{{row.title}}</div></td>
+					<td><div >{{row.description}}</div></td>
+					<td><div >{{row.first_name}} {{row.last_name}}</div></td>
+					<td><div >{{row.created_date}}</div></td>
+					<td><div ><a href="/view_issue/{{row.id}}">View</a></div></td>
+				</tr>
 			{% endfor %}
-			</tr>
-		
+			
 		</table>
+		{% for page in pageCountList %}
+			<a href = "/?page={{page}}"> {{page}} </a>
+		{% endfor %}
+		
 	</center>
 </body>
 </html>
