@@ -25,11 +25,12 @@ def logout(request):
 def home(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
-	record = service.getIssues() 
-	limit = 5
-	pageNo = request.GET['page']  
-	print pageNo
-	recordCount = len(record)
+	limit = 10
+	print type(request.GET)
+	pageNo = request.GET.get('page',1)
+	start = int(pageNo)*limit-(limit-1)
+	record = service.getIssues(start,limit) 
+	recordCount = 100
 	pageCount = int(math.ceil(recordCount/float(limit)))
 	pageCountList=range(1,pageCount+1) #convert integer/float to list; eg:range(2)=>[0,1]
 
