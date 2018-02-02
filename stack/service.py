@@ -27,12 +27,12 @@ def getIssues(fromLimit,toLimit):
 		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
 		rowList.append(rowdict)
 	return rowList
-# def pagination():
-# 	print"fffffffffffffffff"
-# 	cursor = connection.cursor()
-# 	cursor.execute("")
-# 	val = cursor.fetchall()
 
+def totalRecord():
+	cursor = connection.cursor()
+	cursor.execute("select count(id) from issue")
+	val = cursor.fetchall()
+	return val
 
 def getIssueById(id): #,created_user_id
 	cursor = connection.cursor()
