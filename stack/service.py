@@ -17,16 +17,22 @@ def createIssue(title,description,created_user):
 	cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
 	connection.commit()
 
-def getIssues(fromLimit = None,toLimit = None):
+def getIssues(fromLimit,toLimit):
 	cursor = connection.cursor()
 	# cursor.execute(" select * from issue ") 
-	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by")
+	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by limit %s,%s",[fromLimit,toLimit])
 	val = cursor.fetchall()
 	rowList = []
 	for row in val:
 		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
 		rowList.append(rowdict)
 	return rowList
+# def pagination():
+# 	print"fffffffffffffffff"
+# 	cursor = connection.cursor()
+# 	cursor.execute("")
+# 	val = cursor.fetchall()
+
 
 def getIssueById(id): #,created_user_id
 	cursor = connection.cursor()

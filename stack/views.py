@@ -9,7 +9,7 @@ def login(request):
           password = request.POST['password']
 
           user = service.authenticate(username = username,password = password)
-          if user:
+          if user: 
           	request.session['logged_user'] = user
           	print request.session['logged_user']
           	return HttpResponseRedirect('/')
@@ -25,14 +25,17 @@ def logout(request):
 def home(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
-	record = service.getIssues() 
-	limit = 5
-	pageNo = request.GET['page']  
+	pageNo = request.GET['page']
 	print pageNo
+	start = int(pageNo)*10-9
+	limit = 10
+	record = service.getIssues(start,limit) 
+	# if pageNo:
+	# 	record = service.pagination()
+
 	recordCount = len(record)
 	pageCount = int(math.ceil(recordCount/float(limit)))
 	pageCountList=range(1,pageCount+1) #convert integer/float to list; eg:range(2)=>[0,1]
-
 	return render_to_response('home.html',{'record':record,'recordCount':recordCount,'pageCountList':pageCountList})
 
 def create(request):
