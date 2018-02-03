@@ -63,7 +63,7 @@ input[type=text], select {
 {
 	color: blue;
 }
-#solution
+#solution,#solution1
 {
 	font-size: 20px;
 	text-indent: 20px;
@@ -93,26 +93,26 @@ input[type=text], select {
 		
 <div class="container">
 	
-	<div class="title">{{issue.3}}</div>
-	<div id="detail">{{issue.4}}</div>
-	<div id="info"><div id="name">Created By: {{issue.1}} {{issue.2}}</div><div id="time" >Date: {{issue.5}}</div></div><br><br>
+	<div class="title">{{issue.title}}</div>
+	<div id="detail">{{issue.description}}</div>
+	<div id="info"><div id="name">Created By: {{issue.first_name}} {{issue.last_name}}</div><div id="time" >Date: {{issue.created_date}}</div></div><br><br>
 </div>
-<form name="f1" method="post" action="/view_issue_solution/{{issue.0}}/">
+<form name="f1" method="post" action="/view_issue_solution/{{issue.id}}/">
 
 	<div class="container1">
 		{% for row in solutions %}
 		
-			<div class="row"><div id="solution">{{row.2}}</div><br><div id="name">Answered By: {{row.0}} {{row.1}}</div><div id="time">Date: {{row.3}}</div><br></div>
+			<div class="row"><div id="solution">{{row.solution}}</div><br><div id="name">Answered By: {{row.first_name}} {{row.last_name}}</div><div id="time">Date: {{row.created_date}}</div><br></div>
 		{% endfor %}
 		
-	</div>
+	</div> 
 	
 	
 
 
 <div style="font-weight: bold; font-size: 23px;color: #e71b1bb3" >Solution:</div> <center>
 	
-<br><textarea id="solution" rows="7" cols="80" name="solution" placeholder="Write Your Solution here... "></textarea> <br>
+<br><textarea id="solution1" rows="7" cols="80" name="solution" placeholder="Write Your Solution here... "></textarea> <br>
 </center>
 
 <center>
@@ -127,9 +127,8 @@ input[type=text], select {
 		function solutioFn() {
 
 			var solution;
-			solution = document.getElementById('solution').value
-			alert(solution)
-			if(solution == ""){
+			solution = document.getElementById('solution1').value
+			if(solution.trim() == ""){
 				alert("Write your solution.....");
 				return false;
 			}

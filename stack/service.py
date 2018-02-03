@@ -1,13 +1,16 @@
 from django.db import connection
 import datetime
 
-def authenticate(username,password):
+def authenticate(username,password): 
 
 	cursor = connection.cursor()
-	cursor.execute("select * from employee where user_name = %s and password = %s",[username,password])
+	cursor.execute("select * from employee where user_name = %s and password = md5(%s)",[username,password])
 	row = cursor.fetchall()
-	if len(row) ==1:
-		return row[0]
+
+	if len(row) ==1: 
+		row = row[0]
+		rowdict = {'id':row[0],'first_name':row[1],'last_name':row[2],'emp_no':row[3],'user_name':row[4],'email':row[6],'is_active':row[7]} 
+		return rowdict
 	else:
 		return False
 
@@ -32,14 +35,15 @@ def totalRecord():
 	cursor = connection.cursor()
 	cursor.execute("select count(id) from issue")
 	val = cursor.fetchall()
-	return val
+	return val[0][0]
 
 def getIssueById(id): #,created_user_id
 	cursor = connection.cursor()
-	cursor.execute(" select a.id,first_name,last_name,title,description,created_date from issue a join employee b on a.created_by = b.id where a.id = %s",[id])
+	cursor.execute(" select a.id,first_name,last_name,title,description,created_date from issue a join employee b on a.created_by = b.id where a.id = %s order by a.id desc",[id])
 	#cursor.execute(" select * from issue where id = %s ", [id])
 	row = cursor.fetchone()
-	return row
+	rowdict = {'id':row[0],'first_name':row[1],'last_name':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
+	return rowdict
 
 def createSolution(solution, created_user, issue_id):
 
@@ -54,9 +58,12 @@ def getSolutionsForIssue(issue_id):
 	#cursor.execute(" select first_name,last_name,solution,created_date from solution,employee where  issue_id = %s", [issue_id])
 	cursor.execute(" select first_name,last_name,solution,created_date from solution a,employee b where a.created_by = b.id and issue_id = %s", [issue_id])
 	#cursor.execute(" select * from solution where issue_id = %s", [issue_id])
-	row = cursor.fetchall()
-	print row
-	return row
+	solList = []
+	allRow = cursor.fetchall()
+	for row in allRow:
+		rowdict = {'first_name':row[0],'last_name':row[1],'solution':row[2],'created_date':row[3]}
+		solList.append(rowdict)
+	return solList
 
 def getSearchResult(searchKey):
 	cursor = connection.cursor()

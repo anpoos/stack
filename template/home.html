@@ -86,10 +86,12 @@
 	<script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
 	<script type="text/javascript">
 		$('#pagination-demo').twbsPagination({
-        totalPages: 35,
-        visiblePages: 7,
+        totalPages: {{pageCount}},
+        visiblePages: 5,
+        initiateStartPageClick:false, //disabling page loading when page start.
+        startPage:{{currentPgNo}}, // current Page to get selected.
         onPageClick: function (event, page) {
-            //window.location.href = "http://sidanmor.com";
+            window.location.href = "/?page="+page
         }
     });
 	</script>
