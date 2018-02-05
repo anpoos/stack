@@ -65,7 +65,8 @@ def getSolutionsForIssue(issue_id):
 		solList.append(rowdict)
 	return solList
 
-def getSearchResult(searchKey):
+def getSearchResult(searchKey,fromLimit,toLimit):
+	print fromLimit,toLimit
 	cursor = connection.cursor()
 	sql = "select id,title, description from issue where "
 	lowerSearchKey = searchKey.lower()
@@ -77,9 +78,11 @@ def getSearchResult(searchKey):
 		if index !=0:
 			sql += ' or '
 		sql += " title like %s or description like %s "
-		sqlList.append(likeKey)
-		sqlList.append(likeKey)
 
+		sqlList.append(likeKey)
+		sqlList.append(likeKey)
+	sql += "limit 1,10"
+	print sql
 	cursor.execute(sql,sqlList)
 		
 	searchResult = cursor.fetchall()
@@ -89,7 +92,6 @@ def getSearchResult(searchKey):
 		rowdict = {'id':row[0],'title':row[1],'description':row[2]}
 
 		rowList.append(rowdict)
-		print rowList	
 	return rowList
 
 def getKeyword(finalString):

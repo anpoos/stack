@@ -69,9 +69,14 @@ def setSolution(request,id):
 def searchResult(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
+	limit = 10
+	pageNo = request.GET.get('page',1)
+	start = int(pageNo)*limit-(limit-1)
+	recordCount= service.totalRecord()
+	pageCount = int(math.ceil(recordCount/float(limit)))
 	if request.method == 'POST':
 		searcKey = request.POST['search']
-		query = service.getSearchResult(searcKey)
-		return render_to_response('home.html',{'record':query})
+		query = service.getSearchResult(searcKey,start,limit)
+		return render_to_response('home.html',{'record':query,'currentPgNo':pageNo,'pageCount':pageCount,})
 	return render_to_response('home.html')
 
