@@ -81,8 +81,11 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 
 		sqlList.append(likeKey)
 		sqlList.append(likeKey)
-	sql += "limit 1,10"
-	print sql
+	cursor.execute(sql,sqlList)
+	withoutLimitResult = cursor.fetchall()
+	a = len(withoutLimitResult)
+
+	sql += "limit 0,10"
 	cursor.execute(sql,sqlList)
 		
 	searchResult = cursor.fetchall()

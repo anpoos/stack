@@ -25,16 +25,29 @@ def home(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
 	
-
 	limit = 10
 	pageNo = request.GET.get('page',1)
 	start = int(pageNo)*limit-(limit-1)
 	record = service.getIssues(start,limit) 
 	recordCount= service.totalRecord()
 	pageCount = int(math.ceil(recordCount/float(limit)))
-	print pageCount
-	#pageCountList=range(1,pageCount+1) #convert integer/float to list; eg:range(2)=>[0,1]
-	return render_to_response('home.html',{'record':record,'currentPgNo':pageNo,'pageCount':pageCount,})
+	if request.method == 'GET':
+		searcKey = request.GET.get('search',"")
+		if searcKey != "":
+
+			query1 = service.getSearchResult(searcKey,None,None)
+			query = service.getSearchResult(searcKey,start,limit)
+			recordCount= 12
+
+			pageNo = request.GET.get('page',1)
+			#start = int(pageNo)*limit-(limit-1)
+			#recordCount= service.totalRecord()
+			pageCount = int(math.ceil(recordCount/float(limit)))
+			print query1,pageCount,"+++++++++++"
+			return render_to_response('home.html',{'record':query,'currentPgNo':pageNo,'pageCount':pageCount,'searchValue':searcKey,})
+	
+	#pageCountList=range(1,pageCount+1) #convert integer/float to list; eg:range(2)=>[0,1] // not needed
+		return render_to_response('home.html',{'record':record,'currentPgNo':pageNo,'pageCount':pageCount,'searchValue':searcKey,})
 
 def create(request):
 	if not 'logged_user' in request.session:
@@ -66,17 +79,17 @@ def setSolution(request,id):
 		store = service.createSolution(solution,created_user_id,id)
 	return HttpResponseRedirect('/view_issue/%s'%(id))	
 
-def searchResult(request):
-	if not 'logged_user' in request.session:
-		return HttpResponseRedirect('/login')
-	limit = 10
-	pageNo = request.GET.get('page',1)
-	start = int(pageNo)*limit-(limit-1)
-	recordCount= service.totalRecord()
-	pageCount = int(math.ceil(recordCount/float(limit)))
-	if request.method == 'POST':
-		searcKey = request.POST['search']
-		query = service.getSearchResult(searcKey,start,limit)
-		return render_to_response('home.html',{'record':query,'currentPgNo':pageNo,'pageCount':pageCount,})
-	return render_to_response('home.html')
+# def searchResult(request):
+# 	if not 'logged_user' in request.session:
+# 		return HttpResponseRedirect('/login')
+# 	limit = 10
+# 	pageNo = request.GET.get('page',1)
+# 	start = int(pageNo)*limit-(limit-1)
+# 	recordCount= service.totalRecord()
+# 	pageCount = int(math.ceil(recordCount/float(limit)))
+# 	if request.method == 'GET':
+# 		searcKey = request.GET['search']
+# 		query = service.getSearchResult(searcKey,start,limit)
+# 		return render_to_response('home.html',{'record':query,'currentPgNo':pageNo,'pageCount':pageCount,'searchValue':searcKey,})
+# 	return render_to_response('home.html')
 
