@@ -68,7 +68,9 @@ def getSolutionsForIssue(issue_id):
 def getSearchResult(searchKey,fromLimit,toLimit):
 	print fromLimit,toLimit
 	cursor = connection.cursor()
-	sql = "select id,title, description from issue where "
+	sql = "select a.id,title, description, first_name, last_name,created_date from issue a join employee b on a.created_by = b.id "
+	if searchKey != "":
+		sql += "where"
 	lowerSearchKey = searchKey.lower()
 	string = lowerSearchKey.split()
 	stringFinal = getKeyword(string)
@@ -83,19 +85,21 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		sqlList.append(likeKey)
 	cursor.execute(sql,sqlList)
 	withoutLimitResult = cursor.fetchall()
+	# todo : insted of taking whole record and counting, try to use count query for optimization
 	a = len(withoutLimitResult)
 
-	sql += "limit 0,10"
+	sql += "limit %s,%s"%(fromLimit,toLimit)
 	cursor.execute(sql,sqlList)
 		
 	searchResult = cursor.fetchall()
 	
 	rowList = []
 	for row in searchResult:
-		rowdict = {'id':row[0],'title':row[1],'description':row[2]}
+		rowdict = {'id':row[0],'title':row[1],'description':row[2],'first_name':row[3],'last_name':row[4],'created_date':row[5]}
 
 		rowList.append(rowdict)
-	return rowList
+	print rowList,a
+	return rowList,a
 
 def getKeyword(finalString):
 	print finalString

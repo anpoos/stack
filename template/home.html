@@ -62,7 +62,7 @@
 				<td width="25%">Title</td>
 				<td width="40%">Description</td>
 				<td width="10%">Created by</td>
-				<td width="15%">Date and Time</td>
+				<td width="15%">Date</td>
 				<td width="5%">View</td>
 			</tr>
 
@@ -91,7 +91,7 @@
         initiateStartPageClick:false, //disabling page loading when page start.
         startPage:{{currentPgNo}}, // current Page to get selected.
         onPageClick: function (event, page) {
-            window.location.href = "/?page="+page
+            window.location.href = "/?search={{searchValue}}&page="+page
            // window.location.href = "/home_search_result/?page="+page
 
         }
