@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="/static/css/common.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/static/css/common.css"> -->
 
 	{% include "header.html" %}
 <title>
@@ -13,7 +13,7 @@
 		}
 
 		body{
-
+			margin: 0px;
 		}
 
 input[type=text], select {
@@ -25,43 +25,47 @@ input[type=text], select {
     border-radius: 4px;
     box-sizing: border-box;
 }
-.container{
-	background: #639863;
-	border: 3px solid #73AD21;
+.container1{
+	background: #d4f9f2;
 	margin: auto;
 	padding: 10px;
 
 }
-.container1{
-}
 
 .row {
-		border: 1px solid #005380;;
-		background: #ece4b9;
+		border: 1px solid #005380;
+		background: #dbe7e9;
 		margin: auto;
 		padding: 10px;
 
 }
 
 .title{
-	font-size:30px;
-
+	font-size:25px;
+	font-style: comic;
+	color: #e649bd;
+	font-weight: bold;
 }
 #detail
 {
 	font-size: 20px;
-	color: white;
 	text-indent: 50px;
-	border-spacing:10px; 
+	border-spacing:10px;
+
 }
 #time
 {
 	float: right;
 	color: blue;
+	font-size: 14px;
+
 }
 #name
 {
 	color: blue;
+	font-size: 14px;
+
+
 }
 #solution,#solution1
 {
@@ -87,22 +91,41 @@ input[type=text], select {
 				<td><input type="button" name="" value="Menu3"></td>
 
 			</tr>
+
+			#4a9c8b
+			
+
 		</table> -->
 
 	
 		
-<div class="container">
+<div class="container1">
 	
 	<div class="title">{{issue.title}}</div>
 	<div id="detail">{{issue.description}}</div>
-	<div id="info"><div id="name">Created By: {{issue.first_name}} {{issue.last_name}}</div><div id="time" >Date: {{issue.created_date}}</div></div><br><br>
+	<table width="100%">
+		<tr>
+			<td align="left" width="80%"><div id="name">Created By: {{issue.first_name}} {{issue.last_name}}</div></td>
+			<td align="right" ><div id="time" >Date: {{issue.created_date}}</div></td>
+		</tr>
+	</table>
+	
 </div>
 <form name="f1" method="post" action="/view_issue_solution/{{issue.id}}/">
 
-	<div class="container1">
+	<div class="container2">
 		{% for row in solutions %}
 		
-			<div class="row"><div id="solution">{{row.solution}}</div><br><div id="name">Answered By: {{row.first_name}} {{row.last_name}}</div><div id="time">Date: {{row.created_date}}</div><br></div>
+			<div class="row">
+				<div id="solution">{{row.solution}}</div><br>
+
+					<table width="100%">
+						<tr>
+							<td align="left" width="80%"><div id="name">Answered By: {{row.first_name}} {{row.last_name}}</div></td>
+							<td align="right" ><div id="time" >Date: {{row.created_date}}</div></td>
+						</tr>
+					</table>
+			</div>
 		{% endfor %}
 		
 	</div> 

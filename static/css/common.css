@@ -61,10 +61,8 @@ input[type=text],[type=password] {
 }
 
 .menu ul input{
-	width: 400px !important;
-	padding: 9px !important;
+    width: 400px !important;
+    padding: 9px !important;
     margin: 7px 3px !important;
     box-sizing: border-box !important;
     border-radius: 5px !important;
-
-}
