@@ -38,10 +38,14 @@ input[type=text],[type=password] {
 }
 .menu-left li {
 	float: left;
+    color: white;
+    font-weight: bold;
 }
 
 .menu-right li{
 	float: right;
+    font-weight: bold;
+
 }
 
 .menu li a {
@@ -56,10 +60,11 @@ input[type=text],[type=password] {
     background-color: #111111;
 }
 
-.menu input{
-	width: 150px !important;
-	padding: 0px 0px !important;
-    margin: 5px 5 !important;
+.menu ul input{
+	width: 400px !important;
+	padding: 9px !important;
+    margin: 7px 3px !important;
     box-sizing: border-box !important;
     border-radius: 5px !important;
+
 }

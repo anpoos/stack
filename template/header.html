@@ -1,22 +1,19 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/common.css">
-<form name="head" method="post" action="/home_search_result/">
-<div class="menu">
-<ul class="menu-left">
-	<li><img src="/static/image/logo.png"></li>
-	<li><a href="/">Home</a></li>
-	<li><a href="/create_issue">Create Issue</a></li>
-</ul>
-<ul class="menu-right">
-	<li><a href="/logout" style="float: right;">Logout</a></li>
+<form name="head" method="get" action="/">
+	<div class="menu">
+		<ul class="menu-left">
+			<li><img src="/static/image/logo.png"></li>
+			<li><a href="/">Home</a></li>
+			<li><a href="/create_issue">Create Issue</a></li>
+			<li>Search<input type="text" name="search" value="{{searchValue}}"></li>
+		</ul>
+		<ul class="menu-right">
+			<li><a href="/logout" style="float: right;">Logout</a></li>
 
-</ul>
+		</ul>
 
-</div>
-
-<div class="search">
-		<span>Search</span><input type="text" size="" name="search">
-</div>
+	</div>
 
 </form>
 		

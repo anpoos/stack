@@ -2,55 +2,99 @@
 <html>
 <head>
 				{% include "header.html" %}
+
+				<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+
 	<title>Home Page</title>
 	<style type="text/css">
-		 form {
+
+		form {
 			background-color:#c8c750b3	;
 		}
+
+		table{
+			width: 100%;
+		
+  			background-color: #EEEEEE;
+  			text-align: left;
+  			 border-collapse: collapse;
+
+		}
+		td{
+			border-bottom: 1px solid #1C6EA4;
+			padding: 15px;
+
+		}
+
+		tr:hover { 
+			background-color: #717F89;
+			color: white;
+
+		}
+
+		tr:nth-child(even){
+
+		}
+
+		
+		
+		#title{
+			background-color: #4a9c8b;
+			text-align: left;
+			font-weight: bold;
+			font-style: oblique;
+			color: white;
+		}
+		#content{
+			padding: 10px;
+		}
+
 	</style>
 
 </head>
 <body bgcolor="#50848080">
-	<!--
-	<form name="head" method="post" action="/home_search_result/">
-		<table align="right">
-			<tr><br><br>
-				<td><LABEL> STACK</LABEL></td>
-				<td><a href="/create_issue"><input type="button" name="" value="CreateIssue"></a></td>
-				<td><input type="button" name="" value="Menu2"></td>
-				<td><input type="button" name="" value="Menu3"></td>
-
-			</tr>
-		</table><br><br>
-		<table><center>
-			
-			Search: <input type="text" size="70" name="search">
-
-
-		</center>
-		</table><br>
-
-	</form><br>
-	<center>
 	
-	<table>
-		<tr><br><br>
-
-		
-		-->
-		<center>
+	<center><br><br>
 		<table>
 
-		<tr><td><u>ID</u></td><td>Title</td><td>Description</td></tr>
-		{% for row in record %}
-			<tr><td>{{row.id}}</td><td>{{row.title}}</td><td>{{row.description}}</td><td><a href="/view_issue/{{row.id}}">View</a></td></tr>
-		{% endfor %}
-		</tr>
-		
+			<tr id="title">
+				<td width="5%">ID</td>
+				<td width="25%">Title</td>
+				<td width="40%">Description</td>
+				<td width="10%">Created by</td>
+				<td width="15%">Date</td>
+				<td width="5%">View</td>
+			</tr>
+
+			{% for row in record %}
+				<tr id = "content">
+					<td><div >{{row.id}}</div></td>
+					<td><div >{{row.title}}</div></td>
+					<td><div >{{row.description}}</div></td>
+					<td><div >{{row.first_name}} {{row.last_name}}</div></td>
+					<td><div >{{row.created_date}}</div></td>
+					<td><div ><a href="/view_issue/{{row.id}}">View</a></div></td>
+				</tr>
+			{% endfor %}
+			
 		</table>
-		</center>
 
+		    <ul id="pagination-demo" class="pagination-sm"></ul>
 	</center>
-
 </body>
+	<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.twbsPagination.min.js"></script>
+	<script type="text/javascript">
+		$('#pagination-demo').twbsPagination({
+        totalPages: {{pageCount}},
+        visiblePages: 5,
+        initiateStartPageClick:false, //disabling page loading when page start.
+        startPage:{{currentPgNo}}, // current Page to get selected.
+        onPageClick: function (event, page) {
+            window.location.href = "/?search={{searchValue}}&page="+page
+           // window.location.href = "/home_search_result/?page="+page
+
+        }
+    });
+	</script>
 </html>
