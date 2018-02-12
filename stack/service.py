@@ -4,7 +4,7 @@ import datetime
 def authenticate(username,password): 
 
 	cursor = connection.cursor()
-	cursor.execute("select * from employee where user_name = %s and password = md5(%s)",[username,password])
+	cursor.execute("select * from employee where user_name = %s and password = md5(%s) and is_active = 1",[username,password])
 	row = cursor.fetchall()
 
 	if len(row) ==1: 
@@ -16,9 +16,10 @@ def authenticate(username,password):
 
 def createIssue(title,description,created_user):
 	cursor=connection.cursor()
-	date = datetime.datetime.now()
-	cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
+	date = datetime.datetime.now().date()
+	inserted = cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
 	connection.commit()
+	return inserted
 
 def getIssues(fromLimit,toLimit):
 	cursor = connection.cursor()

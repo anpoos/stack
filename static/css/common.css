@@ -1,3 +1,7 @@
+body
+{
+    font-style:;
+}
 input[type=text],[type=password] {
     width: 100%;
     padding: 8px 5px;
