@@ -27,6 +27,7 @@ def createIssue(title,description,created_user):
 def getIssues(fromLimit,toLimit):
 	cursor = connection.cursor()
 	# cursor.execute(" select * from issue ") 
+
 	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by limit %s,%s",[fromLimit,toLimit])
 	val = cursor.fetchall()
 	rowList = []
@@ -84,8 +85,8 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 	sql = "select a.id,title, description, first_name, last_name,created_date from issue a join employee b on a.created_by = b.id "
 	if searchKey != "":
 		sql += "where"
-	lowerSearchKey = searchKey.lower()
-	string = lowerSearchKey.split()
+	#lowerSearchKey = searchKey.lower()
+	#string = lowerSearchKey.split()
 	stringFinal = getKeyword(string)
 	sqlList = []
 	for index,splitWord in enumerate(stringFinal):
@@ -114,9 +115,11 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 	return rowList,a
 
 def getKeyword(finalString):
+	lowerCaseSting = finalString.lower()
+	splitedString = lowerCaseSting.split()
 	removeList = ['a','is','was','we','and','when','what','as','where','to','at','for','at','in','i','be','that','this','have','has','had']
 	finalList = []
-	for row in finalString:		
+	for row in splitedString:		
 		if row not in removeList:				
 			finalList.append(row)
 	return finalList	

@@ -51,21 +51,26 @@ class TestLogin(TestCase):
 	def test_getIssues(self):
 		issue1 = service.createIssue('title 1','description 1', 1)
 		issue2 = service.getIssues(0,3)
-		issue2 = len(issue2)
-		self.assertEqual(issue2,2)
+		numOfRecords = len(issue2)
+		self.assertEqual(numOfRecords,1)
+
 
 	def test_totalRecord(self):
+		issue1 = service.createIssue('title 1','description 1', 1)
+
 		record = service.totalRecord()
 		self.assertEqual(record,1)
 	
 	def test_getIssueById(self):
+		issue1 = service.createIssue('test','test case', 1)
+
 		rowdict = service.getIssueById(1)
 		expected = {'id':1L,
 					'first_name':u'saranya',
 					'last_name':u'A',
 					'title':u'test',
 					'description':u'test case',
-					'created_date':datetime.date(2002, 2, 20),
+					'created_date':datetime.date(2018,02,13),
 					}
 		self.assertEqual(rowdict,expected)
 
@@ -84,15 +89,20 @@ class TestLogin(TestCase):
 		self.assertEqual(ans,1)
 
 	def test_getSearchResult(self):
+		issue1 = service.createIssue('test case','example description ', 1)
 
 		result = service.getSearchResult('case',0,3)
 		self.assertEqual(result[1],1)
 
 		result = service.getSearchResult('example',0,3)
-		self.assertEqual(result[1],0)
+		self.assertEqual(result[1],1)
+
+		result = service.getSearchResult('non exist',0,3)
+		self.assertEqual(result[1],0)		
 
 	def test_getKeyword(self):
 		key= service.getKeyword('what is test method')
+		print key
 		
 
 

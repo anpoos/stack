@@ -5,4 +5,4 @@ create table solution( id integer(10) auto_increment primary key, issue_id varch
 insert into employee values(1,'saranya','A',106,'saran',md5('saran'),'saranya111@yahoo.com',0);
 insert into employee values(2,'anbu','b',107,'anbu',md5('anbu'),'anbu@gmail.com',1);
 -- insert into issue id values(1);	
-insert into issue values(1,'test','test case','1','02.02.2018',1);
+-- insert into issue values(1,'test','test case','1','2018-02-02',1);
