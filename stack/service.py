@@ -19,7 +19,10 @@ def createIssue(title,description,created_user):
 	date = datetime.datetime.now().date()
 	inserted = cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
 	connection.commit()
-	return inserted
+	if inserted:
+		return inserted
+	else:
+		return False
 
 def getIssues(fromLimit,toLimit):
 	cursor = connection.cursor()
@@ -30,7 +33,10 @@ def getIssues(fromLimit,toLimit):
 	for row in val:
 		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
 		rowList.append(rowdict)
-	return rowList
+	if rowList:
+		return rowList
+	else:
+		return False
 
 def totalRecord():
 	cursor = connection.cursor()
@@ -44,14 +50,21 @@ def getIssueById(id): #,created_user_id
 	#cursor.execute(" select * from issue where id = %s ", [id])
 	row = cursor.fetchone()
 	rowdict = {'id':row[0],'first_name':row[1],'last_name':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
-	return rowdict
+	if rowdict:
+		return rowdict
+	else:
+		return False
 
 def createSolution(solution, created_user, issue_id):
 
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
-	cursor.execute(" insert into solution (solution, created_by, created_date, issue_id) values(%s,%s,%s,%s)",[solution,created_user,date,issue_id])
+	solution = cursor.execute(" insert into solution (solution, created_by, created_date, issue_id) values(%s,%s,%s,%s)",[solution,created_user,date,issue_id])
 	connection.commit()
+	if solution:
+		return solution
+	else:
+		return False
 	
 def getSolutionsForIssue(issue_id):
 	cursor = connection.cursor()
@@ -67,7 +80,6 @@ def getSolutionsForIssue(issue_id):
 	return solList
 
 def getSearchResult(searchKey,fromLimit,toLimit):
-	print fromLimit,toLimit
 	cursor = connection.cursor()
 	sql = "select a.id,title, description, first_name, last_name,created_date from issue a join employee b on a.created_by = b.id "
 	if searchKey != "":
@@ -99,11 +111,9 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		rowdict = {'id':row[0],'title':row[1],'description':row[2],'first_name':row[3],'last_name':row[4],'created_date':row[5]}
 
 		rowList.append(rowdict)
-	print rowList,a
 	return rowList,a
 
 def getKeyword(finalString):
-	print finalString
 	removeList = ['a','is','was','we','and','when','what','as','where','to','at','for','at','in','i','be','that','this','have','has','had']
 	finalList = []
 	for row in finalString:		
