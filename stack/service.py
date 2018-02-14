@@ -87,7 +87,7 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		sql += "where"
 	#lowerSearchKey = searchKey.lower()
 	#string = lowerSearchKey.split()
-	stringFinal = getKeyword(string)
+	stringFinal = getKeyword(searchKey)
 	sqlList = []
 	for index,splitWord in enumerate(stringFinal):
 		likeKey = '%'+splitWord+'%'

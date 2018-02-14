@@ -70,7 +70,7 @@ class TestLogin(TestCase):
 					'last_name':u'A',
 					'title':u'test',
 					'description':u'test case',
-					'created_date':datetime.date(2018,02,13),
+					'created_date':datetime.datetime.now().date(),
 					}
 		self.assertEqual(rowdict,expected)
 
