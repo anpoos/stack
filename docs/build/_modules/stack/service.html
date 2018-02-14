@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>stack.service &#8212; stack 1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for stack.service</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="k">import</span> <span class="n">connection</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<div class="viewcode-block" id="authenticate"><a class="viewcode-back" href="../../rst_files/service.html#stack.service.authenticate">[docs]</a><span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="n">password</span><span class="p">):</span> 
+    <span class="sd">&#39;&#39;&#39;This is to authenticate the employee&#39;&#39;&#39;</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select * from employee where user_name = </span><span class="si">%s</span><span class="s2"> and password = md5(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,[</span><span class="n">username</span><span class="p">,</span><span class="n">password</span><span class="p">])</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span><span class="mi">1</span><span class="p">:</span> 
+        <span class="n">row</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rowdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;last_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;emp_no&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;user_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="s1">&#39;email&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span><span class="s1">&#39;is_active&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]}</span> 
+        <span class="k">return</span> <span class="n">rowdict</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<span class="k">def</span> <span class="nf">createIssue</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">description</span><span class="p">,</span><span class="n">created_user</span><span class="p">):</span>
+    <span class="n">cursor</span><span class="o">=</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; insert into issue(title, description, created_date, created_by) values(</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">) &quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">title</span><span class="p">,</span><span class="n">description</span><span class="p">,</span><span class="n">date</span><span class="p">,</span><span class="n">created_user</span><span class="p">])</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">getIssues</span><span class="p">(</span><span class="n">fromLimit</span><span class="p">,</span><span class="n">toLimit</span><span class="p">):</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="c1"># cursor.execute(&quot; select * from issue &quot;) </span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by limit </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,[</span><span class="n">fromLimit</span><span class="p">,</span><span class="n">toLimit</span><span class="p">])</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+        <span class="n">rowdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;last_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;title&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;description&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="s1">&#39;created_date&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]}</span>
+        <span class="n">rowList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rowdict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rowList</span>
+
+<span class="k">def</span> <span class="nf">totalRecord</span><span class="p">():</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(id) from issue&quot;</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">getIssueById</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span> <span class="c1">#,created_user_id</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; select a.id,first_name,last_name,title,description,created_date from issue a join employee b on a.created_by = b.id where a.id = </span><span class="si">%s</span><span class="s2"> order by a.id desc&quot;</span><span class="p">,[</span><span class="nb">id</span><span class="p">])</span>
+    <span class="c1">#cursor.execute(&quot; select * from issue where id = %s &quot;, [id])</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="n">rowdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;last_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;title&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;description&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="s1">&#39;created_date&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]}</span>
+    <span class="k">return</span> <span class="n">rowdict</span>
+
+<span class="k">def</span> <span class="nf">createSolution</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">created_user</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">):</span>
+
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; insert into solution (solution, created_by, created_date, issue_id) values(</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,[</span><span class="n">solution</span><span class="p">,</span><span class="n">created_user</span><span class="p">,</span><span class="n">date</span><span class="p">,</span><span class="n">issue_id</span><span class="p">])</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    
+<span class="k">def</span> <span class="nf">getSolutionsForIssue</span><span class="p">(</span><span class="n">issue_id</span><span class="p">):</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+    <span class="c1">#cursor.execute(&quot; select first_name,last_name,solution,created_date from solution,employee where  issue_id = %s&quot;, [issue_id])</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot; select first_name,last_name,solution,created_date from solution a,employee b where a.created_by = b.id and issue_id = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">issue_id</span><span class="p">])</span>
+    <span class="c1">#cursor.execute(&quot; select * from solution where issue_id = %s&quot;, [issue_id])</span>
+    <span class="n">solList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">allRow</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">allRow</span><span class="p">:</span>
+        <span class="n">rowdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;last_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;solution&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;created_date&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
+        <span class="n">solList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rowdict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">solList</span>
+
+<span class="k">def</span> <span class="nf">getSearchResult</span><span class="p">(</span><span class="n">searchKey</span><span class="p">,</span><span class="n">fromLimit</span><span class="p">,</span><span class="n">toLimit</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="n">fromLimit</span><span class="p">,</span><span class="n">toLimit</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select a.id,title, description, first_name, last_name,created_date from issue a join employee b on a.created_by = b.id &quot;</span>
+    <span class="k">if</span> <span class="n">searchKey</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">+=</span> <span class="s2">&quot;where&quot;</span>
+    <span class="n">lowerSearchKey</span> <span class="o">=</span> <span class="n">searchKey</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">lowerSearchKey</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">stringFinal</span> <span class="o">=</span> <span class="n">getKeyword</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="n">sqlList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">splitWord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stringFinal</span><span class="p">):</span>
+        <span class="n">likeKey</span> <span class="o">=</span> <span class="s1">&#39;%&#39;</span><span class="o">+</span><span class="n">splitWord</span><span class="o">+</span><span class="s1">&#39;%&#39;</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">+=</span> <span class="s1">&#39; or &#39;</span>
+        <span class="n">sql</span> <span class="o">+=</span> <span class="s2">&quot; title like </span><span class="si">%s</span><span class="s2"> or description like </span><span class="si">%s</span><span class="s2"> &quot;</span>
+
+        <span class="n">sqlList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">likeKey</span><span class="p">)</span>
+        <span class="n">sqlList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">likeKey</span><span class="p">)</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span><span class="n">sqlList</span><span class="p">)</span>
+    <span class="n">withoutLimitResult</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="c1"># todo : insted of taking whole record and counting, try to use count query for optimization</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">withoutLimitResult</span><span class="p">)</span>
+
+    <span class="n">sql</span> <span class="o">+=</span> <span class="s2">&quot;limit </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">fromLimit</span><span class="p">,</span><span class="n">toLimit</span><span class="p">)</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span><span class="n">sqlList</span><span class="p">)</span>
+        
+    <span class="n">searchResult</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    
+    <span class="n">rowList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">searchResult</span><span class="p">:</span>
+        <span class="n">rowdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;title&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;description&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s1">&#39;first_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;last_name&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="s1">&#39;created_date&#39;</span><span class="p">:</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]}</span>
+
+        <span class="n">rowList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rowdict</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">rowList</span><span class="p">,</span><span class="n">a</span>
+    <span class="k">return</span> <span class="n">rowList</span><span class="p">,</span><span class="n">a</span>
+
+<span class="k">def</span> <span class="nf">getKeyword</span><span class="p">(</span><span class="n">finalString</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="n">finalString</span>
+    <span class="n">removeList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;is&#39;</span><span class="p">,</span><span class="s1">&#39;was&#39;</span><span class="p">,</span><span class="s1">&#39;we&#39;</span><span class="p">,</span><span class="s1">&#39;and&#39;</span><span class="p">,</span><span class="s1">&#39;when&#39;</span><span class="p">,</span><span class="s1">&#39;what&#39;</span><span class="p">,</span><span class="s1">&#39;as&#39;</span><span class="p">,</span><span class="s1">&#39;where&#39;</span><span class="p">,</span><span class="s1">&#39;to&#39;</span><span class="p">,</span><span class="s1">&#39;at&#39;</span><span class="p">,</span><span class="s1">&#39;for&#39;</span><span class="p">,</span><span class="s1">&#39;at&#39;</span><span class="p">,</span><span class="s1">&#39;in&#39;</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;be&#39;</span><span class="p">,</span><span class="s1">&#39;that&#39;</span><span class="p">,</span><span class="s1">&#39;this&#39;</span><span class="p">,</span><span class="s1">&#39;have&#39;</span><span class="p">,</span><span class="s1">&#39;has&#39;</span><span class="p">,</span><span class="s1">&#39;had&#39;</span><span class="p">]</span>
+    <span class="n">finalList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">finalString</span><span class="p">:</span>		
+        <span class="k">if</span> <span class="n">row</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">removeList</span><span class="p">:</span>				
+            <span class="n">finalList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">finalList</span>	
+        
+
+
+
+
+    <span class="c1"># #print searchResult{&#39;id&#39;:=id,&#39;title&#39;:=title,&#39;description&#39;:description}</span>
+    <span class="c1"># print searchResult,&#39;resul....&#39;</span>
+    <span class="c1"># return searchResult </span>
+<span class="c1"># 	SQL=select * from table</span>
+<span class="c1"># For sting in list:</span>
+<span class="c1"># SQL += or description=%s</span>
+
+    
+
+
+
+
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, stack_developer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
