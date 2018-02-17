@@ -1,8 +1,14 @@
 from django.db import connection
 import datetime
 
-def authenticate(username,password): 
+def empDetails(firstname,lastname,empno,username,password,emailid):
+	cursor = connection.cursor()
+	cursor.execute(" insert into employee( first_name,last_name,emp_no,user_name,password,email ) values(%s,%s,%s,%s,md5(%s),%s) ",[firstname,lastname,empno,username,password,emailid])
+	connection.commit()
 
+	
+
+def authenticate(username,password):
 	cursor = connection.cursor()
 	cursor.execute("select * from employee where user_name = %s and password = md5(%s) and is_active = 1",[username,password])
 	row = cursor.fetchall()
@@ -14,10 +20,10 @@ def authenticate(username,password):
 	else:
 		return False
 
-def createIssue(title,description,created_user):
+def createIssue(title,description,image,created_user):
 	cursor=connection.cursor()
 	date = datetime.datetime.now().date()
-	inserted = cursor.execute(" insert into issue(title, description, created_date, created_by) values(%s,%s,%s,%s) ", [title,description,date,created_user])
+	inserted = cursor.execute(" insert into issue(title, description,image, created_date, created_by) values(%s,%s,%s,%s,%s) ", [title,description,image,date,created_user])
 	connection.commit()
 	if inserted:
 		return inserted
@@ -47,10 +53,10 @@ def totalRecord():
 
 def getIssueById(id): #,created_user_id
 	cursor = connection.cursor()
-	cursor.execute(" select a.id,first_name,last_name,title,description,created_date from issue a join employee b on a.created_by = b.id where a.id = %s order by a.id desc",[id])
+	cursor.execute(" select a.id,first_name,last_name,title,description,image,created_date from issue a join employee b on a.created_by = b.id where a.id = %s order by a.id desc",[id])
 	#cursor.execute(" select * from issue where id = %s ", [id])
 	row = cursor.fetchone()
-	rowdict = {'id':row[0],'first_name':row[1],'last_name':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
+	rowdict = {'id':row[0],'first_name':row[1],'last_name':row[2],'title':row[3],'description':row[4],'image':row[5],'created_date':row[6]}
 	if rowdict:
 		return rowdict
 	else:
@@ -93,8 +99,10 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		likeKey = '%'+splitWord+'%'
 		if index !=0:
 			sql += ' or '
-		sql += " title like %s or description like %s "
+		sql += " title like %s or description like %s or first_name like %s or last_name like %s "
 
+		sqlList.append(likeKey)
+		sqlList.append(likeKey)
 		sqlList.append(likeKey)
 		sqlList.append(likeKey)
 	cursor.execute(sql,sqlList)

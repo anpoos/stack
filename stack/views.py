@@ -3,6 +3,21 @@ from django.shortcuts import render_to_response
 from stack import service
 import math
 #from django.views.generic import TemplateView
+
+def signUp(request):
+	if request.method == 'POST':
+		firstname = request.POST['firstname']
+		lastname = request.POST['lastname']
+		empno = request.POST['empno']
+		username = request.POST['username']
+		password = request.POST['password']
+		emailid = request.POST['emailid']
+		insert = service.empDetails(firstname,lastname,empno,username,password,emailid)
+		return HttpResponseRedirect('/login')
+
+	return render_to_response('sign_up.html')
+	
+
 def login(request):
 	if request.method == 'POST':
           username = request.POST['username']
@@ -45,10 +60,11 @@ def create(request):
 	if request.method == 'POST':
 		title = request.POST['title']
 		description = request.POST['description']
+		image = request.POST['image']
 		created_user_id = request.session['logged_user']['id']
 
 
-		store = service.createIssue(title,description,created_user_id)
+		store = service.createIssue(title,description,image,created_user_id)
 	return render_to_response('issue.html')
 
 def viewIssue(request,id):

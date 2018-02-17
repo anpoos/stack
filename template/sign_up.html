@@ -7,17 +7,17 @@
   body {
   	background:#9c8581b3 ;
   	color: white;
-  	padding-top: 120px;
+  	padding-top: 70px;
   }
 	form {
 		background:#0f0d0db3 ; 
 		width: 600px;
-		
+
 	}
 </style>
-	<title> Issue Stack Login </title>
+	<title> Issue Stack Signup </title>
 
-<script>
+<!-- <script>
 	function validation(){
 		
 		var username,password;
@@ -37,7 +37,7 @@
 		}
 		
 	}
-</script>
+</script> -->
 	
 </head>
 <body>
@@ -47,18 +47,36 @@
 	<img src="/static/image/logo.png">
 
 <table> 
+
 	<tr>
-		<td>Username :</td><td><input type="text" id="username" placeholder="Enter Username" size="30"  name="username"></td>
+		<td>First Name :</td><td><input type="text" id="firstname" placeholder="First Name" name="firstname" required=""></td>
+	</tr>
+
+	<tr>
+		<td>Last Name :</td><td><input type="text" id="lastname" placeholder="Last Name" name="lastname" required=""></td>
+	</tr>
+
+	<tr>
+		<td>Emp No:</td><td><input type="text" id="empno" placeholder="Enter Your Employee No." name="empno" required=""></td>
+	</tr>
+
+	<tr>
+		<td>Username :</td><td><input type="text" id="username" placeholder="Enter Username" size="30"  name="username" required=""></td>
 	</tr>
 	<tr>
 		
-		<td>Password :</td><td>  <input type="Password" id="password" placeholder="Enter Password" size="30" name="password"></td>
+		<td>Password :</td><td>  <input type="Password" id="password" placeholder="Enter Password" size="30" name="password" required=""></td>
 	</tr>
+
+	<tr>
+		<td>Email Id:</td><td><input type="text" name="emailid" placeholder="Eg: XXXX@gmail.com" required=""></td>
+	</tr>
+
 	<tr>
 		<td></td><td>
 		<center>
 			<input type="reset" name=""  value="Reset" class="button red"> &nbsp;&nbsp;&nbsp;
-			<input type="submit" name="" onclick="return validation()" value="Login" class="button">
+			<input type="submit" name="" onclick="return validation()" value="Sign Up" class="button">
 		</center>
 		</td>
 		
@@ -74,8 +92,8 @@
 			
 			<td><center>
 				
-				<span>Don't have an account?</span>
-				<span ><a href="/sign_up" style="color: #0ef20e" >Sign up</a></span>
+				<span>Already have an account?</span>
+				<span ><a href="/login" style="color: #0ef20e" >Sign in</a></span>
 			</center>
 			</td>
 			<!-- <td width="150" align="right">
