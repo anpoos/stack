@@ -132,8 +132,19 @@ def getKeyword(finalString):
 			finalList.append(row)
 	return finalList	
 		
+def myIssue(created_user_id):
+	cursor = connection.cursor()
 
-
+	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by and b.created_by = %s",[created_user_id])
+	val = cursor.fetchall()
+	rowList = []
+	for row in val:
+		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
+		rowList.append(rowdict)
+	if rowList:
+		return rowList
+	else:
+		return False
 
 
 	# #print searchResult{'id':=id,'title':=title,'description':description}

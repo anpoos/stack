@@ -13,8 +13,12 @@ urlpatterns = [
     url(r'^create_issue/',views.create, name = 'create'),
     url(r'^view_issue/(?P<id>[0-9]+)',views.viewIssue, name = 'viewIssue'),
     url(r'^view_issue_solution/(?P<id>[0-9]+)', views.setSolution, name = "setSolution"),
+    url(r'^edit/',views.edit, name = 'edit'),
+    url(r'^edit_issue/',views.editIssue, name = 'editIssue'),
+
+
 
     #url(r'^home_search_result',views.home, name = "home"),
-    # url(r'^home_search_result',views.searchResult, name = "searchResult"),
-    # url(r'^home_search_result',views.searchResult, name = "searchResult"),
+    #url(r'^home_search_result',views.searchResult, name = "searchResult"),
+    #url(r'^home_search_result',views.searchResult, name = "searchResult"),
 ]
