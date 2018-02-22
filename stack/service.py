@@ -62,11 +62,11 @@ def getIssueById(id): #,created_user_id
 	else:
 		return False
 
-def createSolution(solution, created_user, issue_id):
+def createSolution(solution,img_obj,created_user,issue_id):
 
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
-	solution = cursor.execute(" insert into solution (solution, created_by, created_date, issue_id) values(%s,%s,%s,%s)",[solution,created_user,date,issue_id])
+	solution = cursor.execute(" insert into solution (solution,image,created_by, created_date, issue_id) values(%s,%s,%s,%s,%s)",[solution,img_obj,created_user,date,issue_id])
 	connection.commit()
 	if solution:
 		return solution
@@ -77,12 +77,13 @@ def getSolutionsForIssue(issue_id):
 	cursor = connection.cursor()
 
 	#cursor.execute(" select first_name,last_name,solution,created_date from solution,employee where  issue_id = %s", [issue_id])
-	cursor.execute(" select first_name,last_name,solution,created_date from solution a,employee b where a.created_by = b.id and issue_id = %s", [issue_id])
+	cursor.execute(" select first_name,last_name,solution,image,created_date from solution a,employee b where a.created_by = b.id and issue_id = %s", [issue_id])
 	#cursor.execute(" select * from solution where issue_id = %s", [issue_id])
 	solList = []
 	allRow = cursor.fetchall()
+	print issue_id,"============================================"
 	for row in allRow:
-		rowdict = {'first_name':row[0],'last_name':row[1],'solution':row[2],'created_date':row[3]}
+		rowdict = {'first_name':row[0],'last_name':row[1],'solution':row[2],'image':row[3],'created_date':row[3]}
 		solList.append(rowdict)
 	return solList
 
@@ -153,10 +154,3 @@ def myIssue(created_user_id):
 # 	SQL=select * from table
 # For sting in list:
 # SQL += or description=%s
-
-	
-
-
-
-
-	

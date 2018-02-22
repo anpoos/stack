@@ -40,12 +40,14 @@ input[type=text], select {
 
 }
 
+
 .title{
 	font-size:25px;
 	font-style: comic;
 	color: #e649bd;
 	font-weight: bold;
 }
+
 #detail
 {
 	font-size: 20px;
@@ -54,11 +56,7 @@ input[type=text], select {
 
 }
 
-#image
-{
-	width: 50px;
-	height: 50px;
-}
+
 #time
 {
 	float: right;
@@ -109,8 +107,15 @@ input[type=text], select {
 	
 	<div class="title">{{issue.title}}</div>
 	<div id="detail">{{issue.description}}</div>
-	<div id="image"><img src=C:\Anbu\stack\static\img_issue\"{{issue.image}}" > </div>
 	<table width="100%">
+		<tr>
+			<td colspan="2" align="center"><div id="image" >
+				{%if issue.image%}
+				<img width="400px" height="350px" src="/static/img_issue/{{issue.image}}" id="image" ></div>
+				{%endif%}
+			</td>
+				
+		</tr>
 		<tr>
 			<td align="left" width="80%"><div id="name">Created By: {{issue.first_name}} {{issue.last_name}}</div></td>
 			<td align="right" ><div id="time" >Date: {{issue.created_date}}</div></td>
@@ -118,7 +123,7 @@ input[type=text], select {
 	</table>
 	
 </div>
-<form name="f1" method="post" action="/view_issue_solution/{{issue.id}}/">
+<form name="f1" method="post" action="/view_issue_solution/{{issue.id}}/" enctype="multipart/form-data">
 
 	<div class="container2">
 		{% for row in solutions %}
@@ -127,6 +132,17 @@ input[type=text], select {
 				<div id="solution">{{row.solution}}</div><br>
 
 					<table width="100%">
+						<tr>
+							<td colspan="2" align="center">
+								<div id="image" >
+
+									{%if row.image%}
+									<img  width="400px" height="350px" src="/static/img_solution/{{row.image}}"> 
+									{%endif%}
+
+								</div>
+							</td>
+						</tr>
 						<tr>
 							<td align="left" width="80%"><div id="name">Answered By: {{row.first_name}} {{row.last_name}}</div></td>
 							<td align="right" ><div id="time" >Date: {{row.created_date}}</div></td>
@@ -142,8 +158,10 @@ input[type=text], select {
 
 <div style="font-weight: bold; font-size: 23px;color: #e71b1bb3" >Solution:</div> <center>
 	
-<br><textarea id="solution1" rows="7" cols="80" name="solution" placeholder="Write Your Solution here... "></textarea> <br>
+<br><textarea id="solution1" rows="7" cols="82" name="solution" placeholder="Write Your Solution here... "></textarea> <br>
 </center>
+			<div align="right"><input type="file" name="attachment" accept="image/*"></div>
+
 
 <center>
 
