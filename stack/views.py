@@ -97,12 +97,17 @@ def create(request):
 	if request.method == 'POST':
 		title = request.POST['title']
 		description = request.POST['description']
-		img_obj = request.FILES['attachment']
+		try:
+			img_obj = request.FILES['attachment']
+		except:
+			img_obj = ""
 		created_user_id = request.session['logged_user']['id']
 		upload_dir = "static/img_issue/"
-		fout = open(os.path.join(upload_dir,img_obj.name),'wb')
-		fout.write(img_obj.read())
-
+		try:
+			fout = open(os.path.join(upload_dir,img_obj.name),'wb')
+			fout.write(img_obj.read())
+		except:
+			pass
 		store = service.createIssue(title,description,img_obj,created_user_id)
 	return render_to_response('issue.html')
 
@@ -121,11 +126,17 @@ def setSolution(request,id):
 	
 	if request.method =='POST':
 		solution = request.POST['solution']
-		img_obj = request.FILES['attachment']
+		try:
+			img_obj = request.FILES['attachment']
+		except:
+			img_obj = ""
 		created_user_id = request.session['logged_user']['id']
 		upload_dir = "static/img_solution/"
-		fout = open(os.path.join(upload_dir,img_obj.name),'wb')
-		fout.write(img_obj.read())
+		try:
+			fout = open(os.path.join(upload_dir,img_obj.name),'wb')
+			fout.write(img_obj.read())
+		except:
+			pass
 
 		store = service.createSolution(solution,img_obj,created_user_id,id)
 	return HttpResponseRedirect('/view_issue/%s'%(id))	

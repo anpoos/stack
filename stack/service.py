@@ -1,5 +1,8 @@
 from django.db import connection
 import datetime
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 def empDetails(firstname,lastname,empno,username,password,emailid):
 	cursor = connection.cursor()
@@ -22,13 +25,38 @@ def authenticate(username,password):
 
 def createIssue(title,description,image,created_user):
 	cursor=connection.cursor()
-	date = datetime.datetime.now().date()
+	date = datetime.datetime.now()
+
 	inserted = cursor.execute(" insert into issue(title, description,image, created_date, created_by) values(%s,%s,%s,%s,%s) ", [title,description,image,date,created_user])
+	cursor.execute("select email from employee")
+	mail_id = cursor.fetchall()
+	listOf_mail=[]
+	for row in mail_id:
+		new = row
+		listOf_mail.append(new)
+
 	connection.commit()
+	# send mail to all user when issue posted in issue stack
+	fromaddr = "si.issuestack@gmail.com"
+	toaddr = listOf_mail
+	msg = MIMEMultipart()
+	msg['From'] = fromaddr
+	#msg['To'] = toaddr
+	msg['Subject'] = "New Issue posted in Issue Stack"
+	body = "Sommbody posted new issue in Issue Stack, Kindly login and prove your talent..."
+	msg.attach(MIMEText(body, 'plain'))
+	server = smtplib.SMTP('smtp.gmail.com', 587)
+	server.starttls()
+	server.login(fromaddr, "issuestack@123")
+	text = msg.as_string()
+	server.sendmail(fromaddr, toaddr, text)
+	server.quit()
+
 	if inserted:
 		return inserted
 	else:
 		return False
+	
 
 def getIssues(fromLimit,toLimit):
 	cursor = connection.cursor()
@@ -44,6 +72,7 @@ def getIssues(fromLimit,toLimit):
 		return rowList
 	else:
 		return False
+
 
 def totalRecord():
 	cursor = connection.cursor()
@@ -63,11 +92,35 @@ def getIssueById(id): #,created_user_id
 		return False
 
 def createSolution(solution,img_obj,created_user,issue_id):
-
+	print img_obj,"==============================++++++++++="
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
 	solution = cursor.execute(" insert into solution (solution,image,created_by, created_date, issue_id) values(%s,%s,%s,%s,%s)",[solution,img_obj,created_user,date,issue_id])
+	
+	cursor.execute("select email from employee")
+	mail_id = cursor.fetchall()
+	listOf_mail=[]
+	for row in mail_id:
+		new = row
+		listOf_mail.append(new)
 	connection.commit()
+
+	# send mail to all user when solution posted in issue stack
+	fromaddr = "si.issuestack@gmail.com"
+	toaddr = listOf_mail
+	msg = MIMEMultipart()
+	msg['From'] = fromaddr
+	#msg['To'] = listOf_mail
+	msg['Subject'] = "New Solution posted in Issue Stack"
+	body = "Sommbody posted new solution in Issue Stack, Kindly login and get answer for issue..."
+	msg.attach(MIMEText(body, 'plain'))
+	server = smtplib.SMTP('smtp.gmail.com', 587)
+	server.starttls()
+	server.login(fromaddr, "issuestack@123")
+	text = msg.as_string()
+	server.sendmail(fromaddr, toaddr, text)
+	server.quit()
+
 	if solution:
 		return solution
 	else:
@@ -83,7 +136,7 @@ def getSolutionsForIssue(issue_id):
 	allRow = cursor.fetchall()
 	print issue_id,"============================================"
 	for row in allRow:
-		rowdict = {'first_name':row[0],'last_name':row[1],'solution':row[2],'image':row[3],'created_date':row[3]}
+		rowdict = {'first_name':row[0],'last_name':row[1],'solution':row[2],'image':row[3],'created_date':row[4]}
 		solList.append(rowdict)
 	return solList
 
