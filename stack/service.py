@@ -35,6 +35,9 @@ def createIssue(title,description,image,created_user):
 		new = row
 		listOf_mail.append(new)
 
+	cursor.execute("select first_name, last_name from employee where id = %s",[created_user])
+	logedUserName = cursor.fetchall()
+
 	connection.commit()
 	# send mail to all user when issue posted in issue stack
 	fromaddr = "si.issuestack@gmail.com"
@@ -43,7 +46,7 @@ def createIssue(title,description,image,created_user):
 	msg['From'] = fromaddr
 	#msg['To'] = toaddr
 	msg['Subject'] = "New Issue posted in Issue Stack"
-	body = "Sommbody posted new issue in Issue Stack, Kindly login and prove your talent..."
+	body = "The new issue is posted in Issue Stack its Title is  %s and Description is %s by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName[0][0],logedUserName[0][1])
 	msg.attach(MIMEText(body, 'plain'))
 	server = smtplib.SMTP('smtp.gmail.com', 587)
 	server.starttls()
@@ -92,10 +95,9 @@ def getIssueById(id): #,created_user_id
 		return False
 
 def createSolution(solution,img_obj,created_user,issue_id):
-	print img_obj,"==============================++++++++++="
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
-	solution = cursor.execute(" insert into solution (solution,image,created_by, created_date, issue_id) values(%s,%s,%s,%s,%s)",[solution,img_obj,created_user,date,issue_id])
+	solutionRecord = cursor.execute(" insert into solution (solution,image,created_by, created_date, issue_id) values(%s,%s,%s,%s,%s)",[solution,img_obj,created_user,date,issue_id])
 	
 	cursor.execute("select email from employee")
 	mail_id = cursor.fetchall()
@@ -105,14 +107,17 @@ def createSolution(solution,img_obj,created_user,issue_id):
 		listOf_mail.append(new)
 	connection.commit()
 
+	cursor.execute("select first_name,last_name from employee where id = %s",[created_user])
+	logedUserName = cursor.fetchall()
+
 	# send mail to all user when solution posted in issue stack
 	fromaddr = "si.issuestack@gmail.com"
-	toaddr = listOf_mail
+	toaddr = mail_id
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
 	#msg['To'] = listOf_mail
-	msg['Subject'] = "New Solution posted in Issue Stack"
-	body = "Sommbody posted new solution in Issue Stack, Kindly login and get answer for issue..."
+	msg['Subject'] = "New Solution posted in Issue Stack for issue ID %s" %issue_id
+	body = "The new solution for issue ID %s is %s by %s %s"%(issue_id,solution,logedUserName[0][0],logedUserName[0][1])
 	msg.attach(MIMEText(body, 'plain'))
 	server = smtplib.SMTP('smtp.gmail.com', 587)
 	server.starttls()
@@ -121,8 +126,8 @@ def createSolution(solution,img_obj,created_user,issue_id):
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
 
-	if solution:
-		return solution
+	if solutionRecord:
+		return solutionRecord
 	else:
 		return False
 	
@@ -134,7 +139,6 @@ def getSolutionsForIssue(issue_id):
 	#cursor.execute(" select * from solution where issue_id = %s", [issue_id])
 	solList = []
 	allRow = cursor.fetchall()
-	print issue_id,"============================================"
 	for row in allRow:
 		rowdict = {'first_name':row[0],'last_name':row[1],'solution':row[2],'image':row[3],'created_date':row[4]}
 		solList.append(rowdict)

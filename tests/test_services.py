@@ -43,26 +43,26 @@ class TestLogin(TestCase):
 		self.assertEqual(authenticate,False)
 
 	def test_createIssue(self):
-		issue1 = service.createIssue('title 1','description 1', 1)
+		issue1 = service.createIssue('title 1','description 1','image 1', 1)
 		self.assertEqual(issue1,1)
-		issue1 = service.createIssue('','', 1)
+		issue1 = service.createIssue('','','', 1)
 		self.assertEqual(issue1,1)
 
 	def test_getIssues(self):
-		issue1 = service.createIssue('title 1','description 1', 1)
+		issue1 = service.createIssue('title 1','description 1','image 1', 1)
 		issue2 = service.getIssues(0,3)
 		numOfRecords = len(issue2)
 		self.assertEqual(numOfRecords,1)
 
 
 	def test_totalRecord(self):
-		issue1 = service.createIssue('title 1','description 1', 1)
+		issue1 = service.createIssue('title 1','description 1','image 1', 1)
 
 		record = service.totalRecord()
 		self.assertEqual(record,1)
 	
 	def test_getIssueById(self):
-		issue1 = service.createIssue('test','test case', 1)
+		issue1 = service.createIssue('test','test case','image', 1)
 
 		rowdict = service.getIssueById(1)
 		expected = {'id':1L,
@@ -70,6 +70,7 @@ class TestLogin(TestCase):
 					'last_name':u'A',
 					'title':u'test',
 					'description':u'test case',
+					'image':u'image',
 					'created_date':datetime.datetime.now().date(),
 					}
 		self.assertEqual(rowdict,expected)
@@ -78,18 +79,18 @@ class TestLogin(TestCase):
 		# self.assertEqual(rowdict,False)
 
 	def test_createSolution(self):
-		solution = service.createSolution('example..',1,1)
+		solution = service.createSolution('example..','image',1,1)
 		self.assertEqual(solution,1)
 
 	def test_getSolutionsForIssue(self):
-		solution = service.createSolution('example..',1,1)
+		solution = service.createSolution('example..','image',1,1)
 
 		ans = service.getSolutionsForIssue(1)
 		ans = len(ans)
 		self.assertEqual(ans,1)
 
 	def test_getSearchResult(self):
-		issue1 = service.createIssue('test case','example description ', 1)
+		issue1 = service.createIssue('test case','example description ','image', 1)
 
 		result = service.getSearchResult('case',0,3)
 		self.assertEqual(result[1],1)
