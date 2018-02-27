@@ -82,6 +82,16 @@ class TestLogin(TestCase):
 		solution = service.createSolution('example..','image',1,1)
 		self.assertEqual(solution,1)
 
+	def test_getEmail(self):
+		mailid = service.getEmail()
+		mailid = len(mailid)
+		self.assertEqual(mailid,2)
+
+	def test_getUserName(self):
+		user_name = service.getUserName('1')
+		user_name = len(user_name)
+		self.assertEqual(user_name,2)
+
 	def test_getSolutionsForIssue(self):
 		solution = service.createSolution('example..','image',1,1)
 

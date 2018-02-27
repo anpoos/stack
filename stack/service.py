@@ -1,5 +1,6 @@
 from django.db import connection
 import datetime
+from stack import static_word
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
@@ -28,29 +29,21 @@ def createIssue(title,description,image,created_user):
 	date = datetime.datetime.now()
 
 	inserted = cursor.execute(" insert into issue(title, description,image, created_date, created_by) values(%s,%s,%s,%s,%s) ", [title,description,image,date,created_user])
-	cursor.execute("select email from employee")
-	mail_id = cursor.fetchall()
-	listOf_mail=[]
-	for row in mail_id:
-		new = row
-		listOf_mail.append(new)
-
-	cursor.execute("select first_name, last_name from employee where id = %s",[created_user])
-	logedUserName = cursor.fetchall()
-
+	all_mailid = getEmail()
+	logedUserName = getUserName(created_user)
 	connection.commit()
 	# send mail to all user when issue posted in issue stack
-	fromaddr = "si.issuestack@gmail.com"
-	toaddr = listOf_mail
+	fromaddr = static_word.mail_id
+	toaddr = all_mailid
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
 	#msg['To'] = toaddr
 	msg['Subject'] = "New Issue posted in Issue Stack"
-	body = "The new issue is posted in Issue Stack its Title is  %s and Description is %s by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName[0][0],logedUserName[0][1])
+	body = "The new issue is posted in Issue Stack its Title is %s  and Description is %s by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName['first_name'] ,logedUserName['last_name'])
 	msg.attach(MIMEText(body, 'plain'))
-	server = smtplib.SMTP('smtp.gmail.com', 587)
+	server = smtplib.SMTP(static_word.host, static_word.port)
 	server.starttls()
-	server.login(fromaddr, "issuestack@123")
+	server.login(fromaddr, static_word.pwd)
 	text = msg.as_string()
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
@@ -98,30 +91,23 @@ def createSolution(solution,img_obj,created_user,issue_id):
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
 	solutionRecord = cursor.execute(" insert into solution (solution,image,created_by, created_date, issue_id) values(%s,%s,%s,%s,%s)",[solution,img_obj,created_user,date,issue_id])
-	
-	cursor.execute("select email from employee")
-	mail_id = cursor.fetchall()
-	listOf_mail=[]
-	for row in mail_id:
-		new = row
-		listOf_mail.append(new)
+	all_mailid = getEmail()
+	logedUserName = getUserName(created_user)
 	connection.commit()
 
-	cursor.execute("select first_name,last_name from employee where id = %s",[created_user])
-	logedUserName = cursor.fetchall()
-
+	
 	# send mail to all user when solution posted in issue stack
-	fromaddr = "si.issuestack@gmail.com"
-	toaddr = mail_id
+	fromaddr = static_word.mail_id
+	toaddr = all_mailid
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
 	#msg['To'] = listOf_mail
 	msg['Subject'] = "New Solution posted in Issue Stack for issue ID %s" %issue_id
-	body = "The new solution for issue ID %s is %s by %s %s"%(issue_id,solution,logedUserName[0][0],logedUserName[0][1])
+	body = "The new solution for issue ID %s is %s by %s %s"%(issue_id,solution,logedUserName['first_name'] ,logedUserName['last_name'] )
 	msg.attach(MIMEText(body, 'plain'))
-	server = smtplib.SMTP('smtp.gmail.com', 587)
+	server = smtplib.SMTP(static_word.host, static_word.port)
 	server.starttls()
-	server.login(fromaddr, "issuestack@123")
+	server.login(fromaddr, static_word.pwd)
 	text = msg.as_string()
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
@@ -130,7 +116,26 @@ def createSolution(solution,img_obj,created_user,issue_id):
 		return solutionRecord
 	else:
 		return False
-	
+
+def getEmail():
+	cursor = connection.cursor()
+	cursor.execute("select email from employee")
+	mail_id = cursor.fetchall()
+	listOf_mail=[]
+	for row in mail_id:
+		new = row
+		listOf_mail.append(new)
+	return listOf_mail
+
+def getUserName(created_user):
+	cursor = connection.cursor()
+	cursor.execute("select first_name,last_name from employee where id = %s",[created_user])
+	result = cursor.fetchall()
+	for row in result:
+		logedUserName = {'first_name':row[0],'last_name':row[1]}
+	return logedUserName
+
+
 def getSolutionsForIssue(issue_id):
 	cursor = connection.cursor()
 
@@ -205,9 +210,6 @@ def myIssue(created_user_id):
 		return False
 
 
-	# #print searchResult{'id':=id,'title':=title,'description':description}
-	# print searchResult,'resul....'
-	# return searchResult 
-# 	SQL=select * from table
-# For sting in list:
-# SQL += or description=%s
+
+
+
