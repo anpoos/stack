@@ -43,17 +43,21 @@ input[type=text], textarea {
 		<tr>
 			<td><br><label> CREATE ISSUE </label> </td>
 		</tr>
+		
+
 		<tr>
-			<td>Title : <input type="text" size="80" id="tt" name="title"></td><br>
+			<td>Title : <input type="text" size="80" id="tt" name="title" value="{{issue.0.title}}"/></td><br>
+			
 			
 		</tr>
 		<tr>
-			<td>Description: <textarea id="des" name="description" style="width: 100%; height: 100px"> </textarea>  </td>
+			<td>Description: <textarea id="des" name="description" style="width: 100%; height: 100px">{{issue.0.description}} </textarea></td>
 		</tr>
 		<tr>
 			<td align="right"><input type="file" name="attachment" accept="image/*"></td>
 			<td><a href="/mail">mail</a></td>
 		</tr>
+
 		<tr>
 			<td><center>
 				

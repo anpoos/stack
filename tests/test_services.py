@@ -22,24 +22,25 @@ class TestLogin(TestCase):
 		connection.close()
 
 	def test_authenticate(self):
+		
 		# wrong user name passowrd
 		authenticate = service.authenticate('test_user','test_password')
 		self.assertEqual(authenticate,False)
 
 		# correct user and password
 		authenticate = service.authenticate('anbu','anbu')
-		expected = {'id':2L,
+		expected = {
 					'first_name':u'anbu',
 					'last_name':u'b',
-					'emp_no':u'107',
+					'emp_no':u'101',
 					'user_name':u'anbu',
-					'email':u'anbu@gmail.com',
+					'email':u'anpoo.star@gmail.com',
 					'is_active':u'1'
 					}
 		self.assertEqual(authenticate,expected)
 
 		#correct username password for inactive user
-		authenticate = service.authenticate('saran','saran')
+		authenticate = service.authenticate('anbu','anbu1')
 		self.assertEqual(authenticate,False)
 
 	def test_createIssue(self):
@@ -82,13 +83,15 @@ class TestLogin(TestCase):
 		solution = service.createSolution('example..','image',1,1)
 		self.assertEqual(solution,1)
 
-	def test_getEmail(self):
-		mailid = service.getEmail()
-		mailid = len(mailid)
-		self.assertEqual(mailid,2)
+	def test_getEmailsOfAll(self):
 
-	def test_getUserName(self):
-		user_name = service.getUserName('1')
+		mailid = service.getEmailsOfAll()
+		mailid1 = {'mail_id':u'aa@gmail.com'}
+		# mailid = len(mailid)
+		self.assertEqual(mailid,mailid1)
+
+	def test_getUserById(self):
+		user_name = service.getUserById('1')
 		user_name = len(user_name)
 		self.assertEqual(user_name,2)
 
@@ -114,8 +117,3 @@ class TestLogin(TestCase):
 	def test_getKeyword(self):
 		key= service.getKeyword('what is test method')
 		print key
-		
-
-
-
-

@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^view_issue/(?P<id>[0-9]+)',views.viewIssue, name = 'viewIssue'),
     url(r'^view_issue_solution/(?P<id>[0-9]+)', views.setSolution, name = "setSolution"),
     url(r'^edit/',views.edit, name = 'edit'),
-    url(r'^edit_issue/',views.editIssue, name = 'editIssue'),
+    url(r'^edit_issue/(?P<id>[0-9]+)',views.editIssue, name = 'editIssue'),
 
 
 

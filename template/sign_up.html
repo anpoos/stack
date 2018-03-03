@@ -66,6 +66,9 @@
 	<tr>
 		
 		<td>Password :</td><td>  <input type="Password" id="password" placeholder="Enter Password" size="30" name="password" required=""></td>
+	</tr><tr>
+		
+		<td>Re-Enter Password :</td><td>  <input type="Password" id="confrim_password" placeholder="Enter Password" size="30" name="password" required=""></td>
 	</tr>
 
 	<tr>
@@ -109,6 +112,23 @@
 
 </form>
 </center>	
+<script>
+	function validation(){
+		var pw,confrim_pw;
+		pw = document.getElementById('password').value;
+		confrim_pw = document.getElementById('confrim_password').value;
+		if (pw == confrim_pw){
+			return true;
+		}
+		else{
+
+			alert("Plese enter the correct Password");
+			return false;
+		}
+	}
+</script>
 
 </body>
+
+
 </html>

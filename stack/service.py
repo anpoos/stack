@@ -16,6 +16,7 @@ def authenticate(username,password):
 	cursor = connection.cursor()
 	cursor.execute("select * from employee where user_name = %s and password = md5(%s) and is_active = 1",[username,password])
 	row = cursor.fetchall()
+	print row
 
 	if len(row) ==1: 
 		row = row[0]
@@ -29,8 +30,8 @@ def createIssue(title,description,image,created_user):
 	date = datetime.datetime.now()
 
 	inserted = cursor.execute(" insert into issue(title, description,image, created_date, created_by) values(%s,%s,%s,%s,%s) ", [title,description,image,date,created_user])
-	all_mailid = getEmail()
-	logedUserName = getUserName(created_user)
+	all_mailid = getEmailsOfAll()
+	logedUserName = getUserById(created_user)
 	connection.commit()
 	# send mail to all user when issue posted in issue stack
 	fromaddr = static_word.mail_id
@@ -91,8 +92,8 @@ def createSolution(solution,img_obj,created_user,issue_id):
 	cursor = connection.cursor()
 	date = datetime.datetime.now()
 	solutionRecord = cursor.execute(" insert into solution (solution,image,created_by, created_date, issue_id) values(%s,%s,%s,%s,%s)",[solution,img_obj,created_user,date,issue_id])
-	all_mailid = getEmail()
-	logedUserName = getUserName(created_user)
+	all_mailid = getEmailsOfAll()
+	logedUserName = getUserById(created_user)
 	connection.commit()
 
 	
@@ -117,19 +118,18 @@ def createSolution(solution,img_obj,created_user,issue_id):
 	else:
 		return False
 
-def getEmail():
+def getEmailsOfAll():
 	cursor = connection.cursor()
 	cursor.execute("select email from employee")
-	mail_id = cursor.fetchall()
-	listOf_mail=[]
-	for row in mail_id:
-		new = row
-		listOf_mail.append(new)
-	return listOf_mail
+	mail_ids = cursor.fetchall()
+	list_of_mails=[]
+	for mail_id in mail_ids:
+		list_of_mails.append(mail_id)
+	return list_of_mails
 
-def getUserName(created_user):
+def getUserById(id):
 	cursor = connection.cursor()
-	cursor.execute("select first_name,last_name from employee where id = %s",[created_user])
+	cursor.execute("select first_name,last_name from employee where id = %s",[id])
 	result = cursor.fetchall()
 	for row in result:
 		logedUserName = {'first_name':row[0],'last_name':row[1]}
@@ -197,7 +197,6 @@ def getKeyword(finalString):
 		
 def myIssue(created_user_id):
 	cursor = connection.cursor()
-
 	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by and b.created_by = %s",[created_user_id])
 	val = cursor.fetchall()
 	rowList = []
@@ -208,8 +207,22 @@ def myIssue(created_user_id):
 		return rowList
 	else:
 		return False
+def showEditableIssue(issue_id,created_user_id):
+	cursor = connection.cursor()
+	cursor.execute("select title,description from issue where id = %s and created_by = %s",[issue_id,created_user_id])
+	issues = cursor.fetchall()
+	rowList = []
+	for issue in issues:
+		rowdict = {'title':issue[0],'description':issue[1]}
+		rowList.append(rowdict)
+	return rowList
+	
 
-
+def updateIssue(title,description,image,issue_id):
+	cursor = connection.cursor()
+	cursor.execute("update issue set title= %s, description=%s, image = %s where id = %s",[title,description,image,issue_id])
+	connection.commit()
+	return cursor.execute
 
 
 

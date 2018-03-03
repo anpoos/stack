@@ -59,7 +59,9 @@ def home(request):
 def create(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')	
+
 	if request.method == 'POST':
+		print "<<<>>>", request.POST, request.GET
 		title = request.POST['title']
 		description = request.POST['description']
 		try:
@@ -113,9 +115,28 @@ def edit(request):
 	query = service.myIssue(created_user_id)
 	return render_to_response('home.html',{'record':query,})
 
-def editIssue(request):
-	
-	return render_to_response('issue.html')
+def editIssue(request,id):
+	created_user_id = request.session['logged_user']['id']
+	editable_issue = service.showEditableIssue(id,created_user_id)
+	if editable_issue:
+		if request.method == 'POST':
+			title = request.POST['title']
+			description = request.POST['description']
+			try:
+				img_obj = request.FILES['attachment']
+			except:
+				img_obj = ""
+			created_user_id = request.session['logged_user']['id']
+			upload_dir = "static/img_issue/"
+			try:
+				fout = open(os.path.join(upload_dir,img_obj.name),'wb')
+				fout.write(img_obj.read())
+			except:
+				pass
+			store = service.updateIssue(title,description,img_obj,id)
+		return render_to_response('issue.html',{'issue':editable_issue,})
+	else:
+		return HttpResponseRedirect('/')
 
 
 
