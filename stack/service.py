@@ -4,11 +4,16 @@ from stack import static_word
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
+from HTMLParser import HTMLParser
 
 def empDetails(firstname,lastname,empno,username,password,emailid):
 	cursor = connection.cursor()
-	cursor.execute(" insert into employee( first_name,last_name,emp_no,user_name,password,email ) values(%s,%s,%s,%s,md5(%s),%s) ",[firstname,lastname,empno,username,password,emailid])
+	insert = cursor.execute(" insert into employee( first_name,last_name,emp_no,user_name,password,email ) values(%s,%s,%s,%s,md5(%s),%s) ",[firstname,lastname,empno,username,password,emailid])
 	connection.commit()
+	if insert:
+		return insert
+	else:
+		return False
 
 	
 
@@ -25,30 +30,32 @@ def authenticate(username,password):
 	else:
 		return False
 
-def createIssue(title,description,image,created_user):
+def createIssue(title,description,image,created_user,send_mail=True):
 	cursor=connection.cursor()
 	date = datetime.datetime.now()
 
 	inserted = cursor.execute(" insert into issue(title, description,image, created_date, created_by) values(%s,%s,%s,%s,%s) ", [title,description,image,date,created_user])
-	all_mailid = getEmailsOfAll()
-	logedUserName = getUserById(created_user)
-	connection.commit()
-	# send mail to all user when issue posted in issue stack
-	fromaddr = static_word.mail_id
-	toaddr = all_mailid
-	msg = MIMEMultipart()
-	msg['From'] = fromaddr
-	#msg['To'] = toaddr
-	msg['Subject'] = "New Issue posted in Issue Stack"
-	body = "The new issue is posted in Issue Stack its Title is %s  and Description is %s by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName['first_name'] ,logedUserName['last_name'])
-	msg.attach(MIMEText(body, 'plain'))
-	server = smtplib.SMTP(static_word.host, static_word.port)
-	server.starttls()
-	server.login(fromaddr, static_word.pwd)
-	text = msg.as_string()
-	server.sendmail(fromaddr, toaddr, text)
-	server.quit()
-
+	print send_mail,'send_mail....'
+	if send_mail:
+		all_mailid = getEmailsOfAll()
+		logedUserName = getUserById(created_user)
+		connection.commit()
+		# send mail to all user when issue posted in issue stack
+		fromaddr = static_word.mail_id
+		toaddr = all_mailid
+		msg = MIMEMultipart()
+		msg['From'] = fromaddr
+		#msg['To'] = toaddr
+		msg['Subject'] = "New Issue posted in Issue Stack"
+		body = "The new issue is posted in Issue Stack its Title is <strong> %s </strong> and Description is %s by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName['first_name'] ,logedUserName['last_name'])
+		msg.attach(MIMEText(body, 'plain'))
+		server = smtplib.SMTP(static_word.host, static_word.port)
+		server.starttls()
+		server.login(fromaddr, static_word.pwd)
+		text = msg.as_string()
+		server.sendmail(fromaddr, toaddr, text)
+		server.quit()
+		
 	if inserted:
 		return inserted
 	else:
@@ -65,6 +72,7 @@ def getIssues(fromLimit,toLimit):
 	for row in val:
 		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
 		rowList.append(rowdict)
+	print rowList,'.............'
 	if rowList:
 		return rowList
 	else:
@@ -131,6 +139,7 @@ def getUserById(id):
 	cursor = connection.cursor()
 	cursor.execute("select first_name,last_name from employee where id = %s",[id])
 	result = cursor.fetchall()
+	logedUserName = None
 	for row in result:
 		logedUserName = {'first_name':row[0],'last_name':row[1]}
 	return logedUserName
@@ -183,6 +192,7 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		rowdict = {'id':row[0],'title':row[1],'description':row[2],'first_name':row[3],'last_name':row[4],'created_date':row[5]}
 
 		rowList.append(rowdict)
+	print rowList
 	return rowList,a
 
 def getKeyword(finalString):

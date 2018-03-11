@@ -21,15 +21,22 @@ class TestLogin(TestCase):
 		cursor.execute('drop table solution')
 		connection.close()
 
+	def test_empDetails(self):
+		insert = service.empDetails('anbu','b',101,'anbu','anbu','anpoo.star@gmail.com')
+		self.assertEqual(insert,1)
+
 	def test_authenticate(self):
-		
+		insert = service.empDetails('anbu','b',101,'anbu','anbu','anpoo.star@gmail.com')
+		print insert,"??????????"
 		# wrong user name passowrd
 		authenticate = service.authenticate('test_user','test_password')
 		self.assertEqual(authenticate,False)
 
 		# correct user and password
 		authenticate = service.authenticate('anbu','anbu')
+		print authenticate,"????????????"
 		expected = {
+					'id':1l,
 					'first_name':u'anbu',
 					'last_name':u'b',
 					'emp_no':u'101',
@@ -44,7 +51,8 @@ class TestLogin(TestCase):
 		self.assertEqual(authenticate,False)
 
 	def test_createIssue(self):
-		issue1 = service.createIssue('title 1','description 1','image 1', 1)
+		issue1 = service.createIssue('title 1','description 1','image 1', 1,send_mail=None)
+		print issue1,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 		self.assertEqual(issue1,1)
 		issue1 = service.createIssue('','','', 1)
 		self.assertEqual(issue1,1)
@@ -84,10 +92,12 @@ class TestLogin(TestCase):
 		self.assertEqual(solution,1)
 
 	def test_getEmailsOfAll(self):
+		insert = service.empDetails('anbu','b',101,'anbu','anbu','anpoo.star@gmail.com')
 
 		mailid = service.getEmailsOfAll()
-		mailid1 = {'mail_id':u'aa@gmail.com'}
+		mailid1 = {'email':u'anpoo.star@gmail.com'}
 		# mailid = len(mailid)
+
 		self.assertEqual(mailid,mailid1)
 
 	def test_getUserById(self):

@@ -71,7 +71,7 @@
 				<tr id = "content">
 					<td><div >{{row.id}}</div></td>
 					<td><div >{{row.title}}</div></td>
-					<td><div >{{row.description}}</div></td>
+					<td><div >{{row.description|safe}}</div></td>
 					<td><div >{{row.first_name}} {{row.last_name}}</div></td>
 					<td><div >{{row.created_date}}</div></td>
 					<td><div ><a href="/view_issue/{{row.id}}">View</a></div></td>
