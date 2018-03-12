@@ -6,6 +6,7 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from HTMLParser import HTMLParser
 
+
 def empDetails(firstname,lastname,empno,username,password,emailid):
 	cursor = connection.cursor()
 	insert = cursor.execute(" insert into employee( first_name,last_name,emp_no,user_name,password,email ) values(%s,%s,%s,%s,md5(%s),%s) ",[firstname,lastname,empno,username,password,emailid])
@@ -21,7 +22,6 @@ def authenticate(username,password):
 	cursor = connection.cursor()
 	cursor.execute("select * from employee where user_name = %s and password = md5(%s) and is_active = 1",[username,password])
 	row = cursor.fetchall()
-	print row
 
 	if len(row) ==1: 
 		row = row[0]
@@ -35,7 +35,6 @@ def createIssue(title,description,image,created_user,send_mail=True):
 	date = datetime.datetime.now()
 
 	inserted = cursor.execute(" insert into issue(title, description,image, created_date, created_by) values(%s,%s,%s,%s,%s) ", [title,description,image,date,created_user])
-	print send_mail,'send_mail....'
 	if send_mail:
 		all_mailid = getEmailsOfAll()
 		logedUserName = getUserById(created_user)
@@ -47,8 +46,8 @@ def createIssue(title,description,image,created_user,send_mail=True):
 		msg['From'] = fromaddr
 		#msg['To'] = toaddr
 		msg['Subject'] = "New Issue posted in Issue Stack"
-		body = "The new issue is posted in Issue Stack its Title is <strong> %s </strong> and Description is %s by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName['first_name'] ,logedUserName['last_name'])
-		msg.attach(MIMEText(body, 'plain'))
+		body = "The new issue is posted in Issue Stack its Title is <strong> %s </strong> and Description is <strong> %s </strong> by %s %s, Kindly login and prove your talent..."%(title,description,logedUserName['first_name'] ,logedUserName['last_name'])
+		msg.attach(MIMEText(body, 'html'))
 		server = smtplib.SMTP(static_word.host, static_word.port)
 		server.starttls()
 		server.login(fromaddr, static_word.pwd)
@@ -72,7 +71,6 @@ def getIssues(fromLimit,toLimit):
 	for row in val:
 		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
 		rowList.append(rowdict)
-	print rowList,'.............'
 	if rowList:
 		return rowList
 	else:
@@ -112,8 +110,8 @@ def createSolution(solution,img_obj,created_user,issue_id):
 	msg['From'] = fromaddr
 	#msg['To'] = listOf_mail
 	msg['Subject'] = "New Solution posted in Issue Stack for issue ID %s" %issue_id
-	body = "The new solution for issue ID %s is %s by %s %s"%(issue_id,solution,logedUserName['first_name'] ,logedUserName['last_name'] )
-	msg.attach(MIMEText(body, 'plain'))
+	body = "The new solution for issue ID <strong> %s </strong> is <strong> %s </strong> by %s %s"%(issue_id,solution,logedUserName['first_name'] ,logedUserName['last_name'] )
+	msg.attach(MIMEText(body, 'html'))
 	server = smtplib.SMTP(static_word.host, static_word.port)
 	server.starttls()
 	server.login(fromaddr, static_word.pwd)
@@ -192,7 +190,6 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		rowdict = {'id':row[0],'title':row[1],'description':row[2],'first_name':row[3],'last_name':row[4],'created_date':row[5]}
 
 		rowList.append(rowdict)
-	print rowList
 	return rowList,a
 
 def getKeyword(finalString):

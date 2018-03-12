@@ -134,7 +134,7 @@
 	</table>
 	
 </div>
-<form name="f1" method="post" action="/view_issue_solution/{{issue.id}}/" enctype="multipart/form-data">
+<form name="f1" method="post" action="/view_issue_solution/{{issue.id}}/" enctype="multipart/form-data" >
 
 	<div class="container2">
 		{% for row in solutions %}
@@ -172,7 +172,6 @@
 		<tr>
 			<td style="width: 30%">
 				<br><textarea id="solution1" class="widgEditor nothing"  name="solution" ></textarea> <br>
-				
 			</td>
 		</tr>
 	</table>
@@ -182,7 +181,7 @@
 
 <center>
 
-<input type="submit" name="Submit" onclick="return solutioFn()" value="Submit" class="button">
+<input type="submit" name="Submit" value="Submit" onclick="return solutioFn()" class="button">
 </center> 
 </form>
 
@@ -190,10 +189,8 @@
 
 	<script type="text/javascript">
 		function solutioFn() {
-
 			var solution;
 			solution = document.getElementById('solution1').value
-			alert(solution)
 			if(solution.trim() == ""){
 				alert("Write your solution.....");
 				return false;
