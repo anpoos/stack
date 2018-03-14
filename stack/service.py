@@ -65,7 +65,7 @@ def getIssues(fromLimit,toLimit):
 	cursor = connection.cursor()
 	# cursor.execute(" select * from issue ") 
 
-	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by limit %s,%s",[fromLimit,toLimit])
+	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by order by b.id limit %s,%s",[fromLimit,toLimit])
 	val = cursor.fetchall()
 	rowList = []
 	for row in val:
@@ -84,6 +84,7 @@ def totalRecord():
 	return val[0][0]
 
 def getIssueById(id): #,created_user_id
+
 	cursor = connection.cursor()
 	cursor.execute(" select a.id,first_name,last_name,title,description,image,created_date from issue a join employee b on a.created_by = b.id where a.id = %s order by a.id desc",[id])
 	#cursor.execute(" select * from issue where id = %s ", [id])

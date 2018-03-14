@@ -45,7 +45,7 @@ def home(request):
 	limit = 3
 	pageNo = request.GET.get('page',1)
 	start = (int(pageNo)-1)*limit
-	#record = service.getIssues(start,limit) 
+	#query = service.getIssues(start,limit)
 	#recordCount= service.totalRecord()
 	#pageCount = int(math.ceil(recordCount/float(limit)))
 	if request.method == 'GET':
@@ -61,7 +61,6 @@ def create(request):
 		return HttpResponseRedirect('/login')	
 
 	if request.method == 'POST':
-		print "<<<>>>", request.POST, request.GET
 		title = request.POST['title']
 		description = request.POST['description']
 		try:
