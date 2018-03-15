@@ -157,13 +157,13 @@ def getSolutionsForIssue(issue_id):
 		solList.append(rowdict)
 	return solList
 
-def getSearchResult(searchKey,fromLimit,toLimit):
+def getSearchResult(searchKey,fromLimit,toLimit,user_id = None):
 	cursor = connection.cursor()
-	sql = "select a.id,title, description, first_name, last_name,created_date from issue a join employee b on a.created_by = b.id "
-	if searchKey != "":
+	sql = "select a.id,title, description, first_name, last_name,created_date,a.created_by from issue a join employee b on a.created_by = b.id "
+	
+	if searchKey != "" or user_id:
 		sql += "where"
-	#lowerSearchKey = searchKey.lower()
-	#string = lowerSearchKey.split()
+
 	stringFinal = getKeyword(searchKey)
 	sqlList = []
 	for index,splitWord in enumerate(stringFinal):
@@ -176,19 +176,24 @@ def getSearchResult(searchKey,fromLimit,toLimit):
 		sqlList.append(likeKey)
 		sqlList.append(likeKey)
 		sqlList.append(likeKey)
+
+	if user_id:
+		sql += ' a.created_by = %s'
+		sqlList.append(user_id)
+
 	cursor.execute(sql,sqlList)
 	withoutLimitResult = cursor.fetchall()
 	# todo : insted of taking whole record and counting, try to use count query for optimization
 	a = len(withoutLimitResult)
 
-	sql += "limit %s,%s"%(fromLimit,toLimit)
+	sql += " limit %s,%s"%(fromLimit,toLimit)
 	cursor.execute(sql,sqlList)
 		
 	searchResult = cursor.fetchall()
 	
 	rowList = []
 	for row in searchResult:
-		rowdict = {'id':row[0],'title':row[1],'description':row[2],'first_name':row[3],'last_name':row[4],'created_date':row[5]}
+		rowdict = {'id':row[0],'title':row[1],'description':row[2],'first_name':row[3],'last_name':row[4],'created_date':row[5],'created_by':row[6]}
 
 		rowList.append(rowdict)
 	return rowList,a
@@ -203,18 +208,7 @@ def getKeyword(finalString):
 			finalList.append(row)
 	return finalList	
 		
-def myIssue(created_user_id):
-	cursor = connection.cursor()
-	cursor.execute("select first_name,last_name,b.id,title,description,created_date from employee a, issue b where a.id = b.created_by and b.created_by = %s",[created_user_id])
-	val = cursor.fetchall()
-	rowList = []
-	for row in val:
-		rowdict = {'first_name':row[0],'last_name':row[1],'id':row[2],'title':row[3],'description':row[4],'created_date':row[5]}
-		rowList.append(rowdict)
-	if rowList:
-		return rowList
-	else:
-		return False
+
 def showEditableIssue(issue_id,created_user_id):
 	cursor = connection.cursor()
 	cursor.execute("select title,description from issue where id = %s and created_by = %s",[issue_id,created_user_id])

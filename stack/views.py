@@ -111,8 +111,8 @@ def edit(request):
 	if not 'logged_user' in request.session:
 		return HttpResponseRedirect('/login')
 	created_user_id = request.session['logged_user']['id']
-	query = service.myIssue(created_user_id)
-	return render_to_response('home.html',{'record':query,})
+	query = service.getSearchResult('',0,100,user_id =created_user_id )
+	return render_to_response('home.html',{'record':query[0],})
 
 def editIssue(request,id):
 	created_user_id = request.session['logged_user']['id']
